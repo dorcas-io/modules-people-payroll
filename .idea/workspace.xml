@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a1a453e6-21d6-41fb-930b-26a8abd030e0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../dorcas-hub/app/Http/Controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/app/Http/Controllers/Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dorcas-hub/app/Http/Middleware/ResolveCustomSubdomain.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/app/Http/Middleware/ResolveCustomSubdomain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dorcas-hub/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dorcas-hub/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dorcas-hub/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/routes/web.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/modules-finance-tax/composer.json</pharConfigPath>
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/laravel-compat" />
+  </component>
+  <component name="ProjectId" id="1XLGWRLjSeUypSxbIJHV2CjCPFc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../dorcas-hub/database/migrations" />
+      <recent name="$PROJECT_DIR$/../dorcas-hub/database/factories" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a1a453e6-21d6-41fb-930b-26a8abd030e0" name="Default Changelist" comment="" />
+      <created>1580817992835</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580817992835</updated>
+      <workItem from="1580817994294" duration="20298000" />
+      <workItem from="1580941145303" duration="21843000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="380" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1580941201697">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="380" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1580941201697" />
+    <state x="368" y="191" width="728" height="518" key="find.popup" timestamp="1581077863547">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="368" y="191" width="728" height="518" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1581077863547" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1581079721982">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1581079721982" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.23.1440.806@0.23.1440.806" timestamp="1580985396328" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/modules-finance-tax/src/Http/Controllers/ModulesFinanceTaxController.php</url>
+          <line>41</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
