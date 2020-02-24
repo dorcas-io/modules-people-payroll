@@ -143,11 +143,6 @@
         new Vue({
             el: '#tax_authority',
             data:{
-                authorities :[{
-                    'name':'Test',
-                    'payment_mode':'Flutterwave',
-                    'buttons': 'sjs'
-                }],
             },
             methods:{
                 clickAction: function (event) {
@@ -181,7 +176,7 @@
                         confirmButtonColor: "#DD6B55",
                         confirmButtonText: "Yes, delete it!",
                         showLoaderOnConfirm: true,
-                        preConfirm: (delete_image) => {
+                        preConfirm: () => {
                             return axios.delete("/mfn/tax-authorities/" + id)
                                 .then(function (response) {
                                     $('#authorities-table').bootstrapTable('removeByUniqueId', response.data.id);
@@ -217,7 +212,7 @@
             // row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             // row.buttons = '<a class="btn btn-danger btn-sm remove" data-action="remove" href="#" data-id="'+row.id+'">Delete</a>';
             // if (typeof row.account.data !== 'undefined' && row.account.data.name == 'unconfirmed') {
-            //     row.buttons += '<a class="btn btn-warning btn-sm view" data-action="view" href="/mfn/finance-entries/' + row.id + '" >Confirm</a>'
+            //     row.buttons += '<a class="btn btn-warning btn-sm views" data-action="views" href="/mfn/finance-entries/' + row.id + '" >Confirm</a>'
             // }
             // return row;
         }

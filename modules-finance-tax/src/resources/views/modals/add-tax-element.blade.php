@@ -24,9 +24,9 @@
                                 <option value="monthly">Monthly</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-12" v-if="elements_form.isYearly">
+                        <div class="form-group col-md-4 " v-if="elements_form.isYearly">
                             <label class="form-label" >Add Run  Month and Date </label>
-                            <input type="date" v-model="elements_form.frequency_year ">
+                            <input  type="date"  class="form-control" v-model="elements_form.frequency_year" >
                         </div>
                         <div class="form-group col-md-12" v-if="elements_form.isMonthly">
                             <label class="form-label" for="element_type">Add Tax Run Day </label>

@@ -39,10 +39,10 @@ class ModulesFinanceTaxController extends Controller
 
             $this->setViewUiResponse($request);
 
-            return view('modules-finance-tax::TaxAuthority/index',$this->data);
+            return view('modules-finance-tax::Tax/index',$this->data);
         }catch (\Exception $e){
             $this->setViewUiResponse($request);
-            return view('modules-finance-tax::TaxAuthority/index',$this->data);
+            return view('modules-finance-tax::Tax/index',$this->data);
         }
 
     }
@@ -65,11 +65,11 @@ class ModulesFinanceTaxController extends Controller
                           </div>';
 
             }
-            return view('modules-finance-tax::TaxAuthority/tax_authority', $this->data);
+            return view('modules-finance-tax::Tax/tax_authority', $this->data);
 
         }
         catch (\Exception $e){
-            return view('modules-finance-tax::TaxAuthority/tax_authority',$this->data);
+            return view('modules-finance-tax::Tax/tax_authority',$this->data);
         }
 
     }
@@ -89,9 +89,9 @@ class ModulesFinanceTaxController extends Controller
         $limit = (int) $request->query('limit', 10);
 
         # get the request parameters
-        $path = ['tax','authority'];
+        $path = ['authority'];
 
-        $query = $sdk->createFinanceResource();
+        $query = $sdk->createTaxResource();
         $query = $query->addQueryArgument('limit', $limit)
             ->addQueryArgument('page', get_page_number($offset, $limit));
         if (!empty($search)) {
@@ -109,14 +109,15 @@ class ModulesFinanceTaxController extends Controller
         # set the data
         return response()->json($this->data);
     }
+
     public function createAuthority(Request $request ,Sdk $sdk){
         try{
-            $resource = $sdk->createFinanceResource();
+            $resource = $sdk->createTaxResource();
             $resource = $resource->addBodyParam('authority_name',$request->authority_name)
                 ->addBodyParam('payment_mode',$request->payment_type)
                 ->addBodyParam('payment_details',$request->fields)
                 ->addBodyParam('default_payment_details',$request->default_fields);
-            $response = $resource->send('post',['tax','authority']);
+            $response = $resource->send('post',['authority']);
             if (!$response->isSuccessful()) {
                 $message = $response->errors[0]['title'] ?? '';
                 throw new \RuntimeException('Failed while adding the Tax Authority '.$message);
@@ -135,12 +136,12 @@ class ModulesFinanceTaxController extends Controller
     public function updateAuthority(Request $request, Sdk $sdk, string $id)
     {
         try {
-            $resource = $sdk->createFinanceResource();
+            $resource = $sdk->createTaxResource();
             $resource = $resource->addBodyParam('authority_name', $request->authority_name)
                 ->addBodyParam('payment_mode', $request->payment_type)
                 ->addBodyParam('payment_details', json_encode($request->fields))
                 ->addBodyParam('default_payment_details', json_encode($request->default_fields));
-            $response = $resource->send('put', ['tax', 'authority', $id]);
+            $response = $resource->send('put', ['authority',$id]);
             if (!$response->isSuccessful()) {
                 $message = $response->errors[0]['title'] ?? '';
                 throw new \RuntimeException('Failed while adding the Tax Authority ' . $message);
@@ -155,10 +156,10 @@ class ModulesFinanceTaxController extends Controller
 
     public function deleteAuthority(Request $request, Sdk $sdk, string $id){
         try{
-            $resource = $sdk->createFinanceResource();
-            $response = $resource->send('delete', ['tax', 'authority', $id]);
+            $resource = $sdk->createTaxResource();
+            $response = $resource->send('delete', ['authority',$id]);
             if (!$response->isSuccessful()) {
-                throw new \RuntimeException($response->errors[0]['title'] ?? 'Failed while deleting the product.');
+                throw new \RuntimeException($response->errors[0]['title'] ?? 'Failed while deleting the authority.');
 
             }
             $this->data = $response->getData();
@@ -176,26 +177,26 @@ class ModulesFinanceTaxController extends Controller
             $this->data['submenuAction'] = '';
             $this->data['args'] = $request->query->all();
             $this->setViewUiResponse($request);
-            $response = $sdk->createFinanceResource()->send('get',['tax','authority',$id]);
+            $response = $sdk->createTaxResource()->send('get',['authority',$id]);
+
             if(!$response->isSuccessful()){
+
                 $response = (tabler_ui_html_response(['Could not find the tax authority']))->setType(UiResponse::TYPE_ERROR);
-                return redirect(url()->route('view_authority'))->with('UiResponse', $response);
+                return redirect(url()->route('tax-authorities'))->with('UiResponse', $response);
             }
             $authority = $response->getData(true);
-            $elements = $this->getElements($sdk,$id);
-            $accounts = $this->getAccounts($sdk);
+            $elements = $this->getElements($request,$sdk,$id);
+            $accounts = $this->getAccounts($request,$sdk);
             $this->data['authority'] = $authority;
             $this->data['elements'] = $elements->getData(true);
             $this->data['accounts'] = $accounts->getData(true);
-            return view('modules-finance-tax::TaxAuthority/single', $this->data);
+            return view('modules-finance-tax::Tax/single', $this->data);
 
         }
         catch (\Exception $e){
-            return view('modules-finance-tax::TaxAuthority/single',$this->data);
+            return view('modules-finance-tax::Tax/single',$this->data);
         }
     }
-
-
 
     public function searchElement(Request $request, Sdk $sdk){
         $search = $request->query('search', '');
@@ -204,9 +205,9 @@ class ModulesFinanceTaxController extends Controller
         $limit = (int) $request->query('limit', 10);
 
         # get the request parameters
-        $path = ['tax','element'];
+        $path = ['element'];
 
-        $query = $sdk->createFinanceResource();
+        $query = $sdk->createTaxResource();
         $query = $query->addQueryArgument('limit', $limit)
             ->addQueryArgument('page', get_page_number($offset, $limit))
             ->addQueryArgument('id', $id);
@@ -228,7 +229,7 @@ class ModulesFinanceTaxController extends Controller
 
     public function addElement(Request $request, Sdk $sdk){
         try{
-            $resource = $sdk->createFinanceResource();
+            $resource = $sdk->createTaxResource();
             $resource = $resource->addBodyParam('authority',$request->authority)
                 ->addBodyParam('element_type',$request->element_type)
                 ->addBodyParam('element_name',$request->element_name)
@@ -237,7 +238,7 @@ class ModulesFinanceTaxController extends Controller
                 ->addBodyParam('target_accounts',$request->accounts)
                 ->addBodyParam('frequency_year',$request->frequency_year)
                 ->addBodyParam('frequency_month',$request->frequency_month);
-            $response = $resource->send('post',['tax','element']);
+            $response = $resource->send('post',['element']);
 //            return $response->errors;
             if (!$response->isSuccessful()) {
                 $message = $response->errors[0]['title'] ?? '';
@@ -254,13 +255,29 @@ class ModulesFinanceTaxController extends Controller
         }
     }
 
-    private function getElements(Sdk $sdk, string $id){
-        $response = $sdk->createFinanceResource()->addQueryArgument('id',$id)->send('get',['tax','element']);
+    private function getElements(Request $request,Sdk $sdk, string $id){
+
+        $offset = (int) $request->query('offset', 10);
+
+        $limit = (int) $request->query('limit', 100);
+
+        # get the request parameters
+
+        $query = $sdk->createTaxResource();
+        $query = $query->addQueryArgument('limit', $limit)
+            ->addQueryArgument('page', get_page_number($offset, $limit));
+        $response = $query->send('get',['elements']);
         return $response;
     }
 
-    private function getAccounts(Sdk $sdk){
-        $response = $sdk->createFinanceResource()->send('get',['accounts']);
+    private function getAccounts(Request $request,Sdk $sdk){
+        $offset = (int) $request->query('offset', 0);
+        $limit = (int) $request->query('limit', 10);
+
+        $query = $sdk->createFinanceResource();
+        $query = $query->addQueryArgument('limit', $limit)
+            ->addQueryArgument('page', get_page_number($offset, $limit));
+        $response = $query->send('get',['accounts']);
         return $response;
     }
 }

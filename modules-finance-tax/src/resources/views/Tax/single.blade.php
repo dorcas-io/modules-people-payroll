@@ -1,13 +1,11 @@
 @extends('layouts.tabler')
-
-@section('body_content_header_extras')
-
+@section('head_css')
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('body_content_main')
 
     @include('layouts.blocks.tabler.alert')
-
 
     <div class="row">
 
@@ -47,7 +45,7 @@
                                 <table class="table card-table">
                                     <tbody>
                                     <span class="badge badge-primary">Secondary Bank </span>
-                                    <tr v-if="bank_details !== 'null' " v-for="bank_detail in bank_details" :key="bank_detail">
+                                    <tr v-if="bank_details !== 'null' " v-for="bank_detail in bank_details" >
                                         <td>@{{ bank_detail.bank }}</td>
                                         <td>@{{ bank_detail.account }}</td>
                                     </tr>
@@ -132,7 +130,7 @@
 
 @endsection
 @section('body_js')
-
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         const max_day = 28;
         const min_day = 1;
@@ -183,6 +181,7 @@
                         case 'yearly':
                             this.elements_form.isMonthly = false;
                             this.elements_form.isYearly = true;
+
                             break;
                         case 'monthly':
                             this.elements_form.isYearly = false;
@@ -252,6 +251,7 @@
                     $('#submit-element').addClass('btn-loading btn-icon')
                     // console.log(this.form_data)
                     this.elements_form['authority'] = this.authority.id
+                    console.log(this.elements_form)
                     axios.post('/mfn/tax-elements',this.elements_form)
                         .then(response=>{
                             $('#submit-element').removeClass('btn-loading btn-icon')
@@ -299,10 +299,17 @@
                     authority.getAccounts(value);
                 }
             });
+
+            $('.custom-datepicker').datepicker({
+                uiLibrary: 'bootstrap4',
+                format: 'yyyy-mm-dd'
+                /*close: function (e) {
+                    vm.due_date = e.target.value;
+                }*/
+            });
         });
 
 
-    </script>
-    <script>
+
     </script>
 @endsection
