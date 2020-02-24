@@ -138,7 +138,7 @@ class ModulesFinanceTaxController extends Controller
         try {
             $resource = $sdk->createTaxResource();
             $resource = $resource->addBodyParam('authority_name', $request->authority_name)
-                ->addBodyParam('payment_mode', $request->payment_type)
+                ->addBodyParam('payment_mode', $request->payment_mode)
                 ->addBodyParam('payment_details', json_encode($request->fields))
                 ->addBodyParam('default_payment_details', json_encode($request->default_fields));
             $response = $resource->send('put', ['authority',$id]);

@@ -18,7 +18,7 @@
                                 <select  v-model="form_data.payment_type"  class="form-control custom-select selectized" tabindex="-1" required >
                                     <option selected value="" disabled>Select Payment Type</option>
                                     <option value="paystack">Paystack</option>
-                                    <option value="flutterwave">Flutterwave</option>
+                                    <option value="flutterwave">flutterwave</option>
                                 </select>
 
                             </div>

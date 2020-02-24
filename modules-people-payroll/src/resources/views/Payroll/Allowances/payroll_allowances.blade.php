@@ -186,6 +186,7 @@
                     isComputational:false,
                     isFixed:false,
                     authority_id:null,
+                    authority_name:null,
                     allowance_model:'',
                     model_data:'',
                     allowance_type:'',
@@ -247,11 +248,13 @@
                                     break;
 
                             }
-                                 Payroll.form_data.authority_id =response.data[0].authority,
-                                 Payroll.form_data.allowance_model = response.data[0].model,
-                                 Payroll.form_data.allowance_type =response.data[0].allowance_type,
-                                 Payroll.form_data.allowance_name =response.data[0].name,
-                                 Payroll.form_data.allowance_id = id,
+                                 Payroll.form_data.authority_id =response.data[0].authority;
+                                 Payroll.form_data.allowance_model = response.data[0].model;
+                                 Payroll.form_data.allowance_type =response.data[0].allowance_type;
+                                 Payroll.form_data.allowance_name =response.data[0].name;
+                                 Payroll.form_data.allowance_id = id;
+                                 Payroll.form_data.authority_id =  response.data[0].authority_id;
+                                 Payroll.form_data.authority_name =  response.data[0].authority_name;
 
                             $('#payroll-allowances-edit-modal').modal('show')
 

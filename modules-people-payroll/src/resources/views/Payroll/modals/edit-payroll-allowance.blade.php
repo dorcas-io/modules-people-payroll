@@ -25,7 +25,7 @@
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="allowance" >Authority ( Optional)  </label>
                                 <select  class="form-control custom-select selectized" tabindex="-1"  v-model="form_data.authority_id" >
-                                    <option selected value="null">Select Authority </option>
+                                    <option selected :value="form_data.authority_id">@{{ form_data.authority_name }} </option>
                                     <option  :value="authority.id" v-for="authority in authorities">@{{ authority.name }}</option>
                                 </select>
 
@@ -89,7 +89,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit"  name="action" id="submit-allowance" form="payroll_allowance_edit" class="btn btn-primary">Submit</button>
+                <button type="submit"  name="action" id="edit-allowance" form="payroll_allowance_edit" class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>

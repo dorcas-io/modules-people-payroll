@@ -446,16 +446,25 @@ class ModulesPeoplePayrollController extends Controller
 
     public function singlePaygroup(Request $request , Sdk $sdk, string $id){
         try {
+            $this->data['page']['title'] .= ' &rsaquo; Payroll ';
+            $this->data['header']['title'] = 'People Pay Group';
+            $this->data['submenuAction'] = '';
+            $this->data['args'] = $request->query->all();
+            $this->setViewUiResponse($request);
             $response = $sdk->createPayrollResource()->send('get',['paygroup',$id]);
+
             if(!$response->isSuccessful()){
-                throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find the paygroup');
+
+                $response = (tabler_ui_html_response(['Could not find the Payroll Paygroup']))->setType(UiResponse::TYPE_ERROR);
+                return redirect(url()->route('payroll-paygroup'))->with('UiResponse', $response);
             }
-            $authority = $response->getData(true);
-            return response()->json([$authority, 200]);
+            $paygroup = $response->getData(true);
+            $this->data['paygroup'] = $paygroup;
+            return view('modules-people-payroll::Payroll/Paygroup/single', $this->data);
+
         }
         catch (\Exception $e){
-            return response()->json(['message' => $e->getMessage()], 400);
-
+            return view('modules-finance-tax::Tax/single',$this->data);
         }
     }
 
@@ -476,4 +485,32 @@ class ModulesPeoplePayrollController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
+
+    public function searchEmployee(Request $request, Sdk $sdk){
+        $search = $request->query('search', '');
+        $offset = (int) $request->query('offset', 0);
+        $limit = (int) $request->query('limit', 10);
+
+        # get the request parameters
+        $path = ['paygroup'];
+
+        $query = $sdk->createEmployeeResource();
+        $query = $query->addQueryArgument('limit', $limit)
+            ->addQueryArgument('page', get_page_number($offset, $limit));
+        if (!empty($search)) {
+            $query = $query->addQueryArgument('search', $search);
+        }
+        $response = $query->send('get', $path);
+        # make the request
+        if (!$response->isSuccessful()) {
+            // do something here
+            throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find any matching paygroup.');
+        }
+        $this->data['total'] = $response->meta['pagination']['total'] ?? 0;
+        # set the total
+        $this->data['rows'] = $response->data;
+        # set the data
+        return response()->json($this->data);
+        }
 }

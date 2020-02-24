@@ -93,7 +93,6 @@
 
                     submitForm: function () {
                         $('#submit-authority').addClass('btn-loading btn-icon')
-                        // console.log(this.form_data)
                         axios.post('/mfn/tax-authorities',this.form_data)
                             .then(response=>{
                                 $('#submit-authority').removeClass('btn-loading btn-icon')

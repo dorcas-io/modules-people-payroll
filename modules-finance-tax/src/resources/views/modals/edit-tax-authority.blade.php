@@ -17,8 +17,8 @@
                                 <label class="form-label" for="authority">Payment Mode</label>
                                 <select  v-model="authority.payment_mode" class="form-control custom-select " tabindex="-1" required >
                                     <option selected :value="authority.payment_mode" >@{{ authority.payment_mode }}</option>
-                                    <option value="paystack">Paystack</option>
-                                    <option value="flutterwave">Flutterwave</option>
+                                    <option value="paystack">paystack</option>
+                                    <option value="flutterwave">flutterwave</option>
                                 </select>
 
                             </div>

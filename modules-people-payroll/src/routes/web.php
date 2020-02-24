@@ -28,6 +28,8 @@ Route::group(['namespace' => 'Dorcas\ModulesPeoplePayroll\Http\Controllers', 'mi
     Route::delete('payroll-paygroup/{id}', 'ModulesPeoplePayrollController@deletePaygroup')->name('payroll-delete_paygroup');
 
 
+    Route::get('payroll-employee-search','ModulesPeoplePayrollController@searchEmployee')->name('payroll-employee-search');
+
 //    Route::get('tax-authorities/{id}', 'ModulesFinanceTaxController@singleAuthority')->name('single_authority');
 //    Route::post('tax-authorities', 'ModulesFinanceTaxController@createAuthority')->name('create_authority');
 //    Route::put('tax-authorities/{id}', 'ModulesFinanceTaxController@updateAuthority')->name('update_authority');

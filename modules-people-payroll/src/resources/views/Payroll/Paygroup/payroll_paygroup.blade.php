@@ -51,7 +51,6 @@
                             @endcomponent
                         </div>
                     @endif
-                    @include('modules-people-payroll::Payroll.modals.edit-payroll-paygroup')
 
                 </div>
 
@@ -131,7 +130,6 @@
             data:{
                 form_data:{
                     paygroup_name:'',
-                    paygroup_id:'',
                 }
             },
             methods:{
@@ -218,34 +216,7 @@
                     // this.$emit('input', this.fields);
                 },
 
-                updatePaygroup: function () {
-                    $('#edit-paygroup').addClass('btn-loading btn-icon')
-                    axios.put('/mpe/payroll-paygroup/'+this.form_data.paygroup_id,this.form_data)
-                        .then(response=>{
-                            $('#edit-paygroup').removeClass('btn-loading btn-icon')
-                            form_data = {};
-                            $('#payroll-paygroups-edit-modal').modal('hide')
 
-                            swal({
-                                title:"Success!",
-                                text:"Payroll Paygroup Successfully Updated",
-                                type:"success",
-                                showLoaderOnConfirm: true,
-                            }).then(function () {
-                                location.reload()
-                            });
-                        })
-                        .catch(e=>{
-                            console.log(e.response.data);
-                            $('#edit-paygroup').removeClass('btn-loading btn-icon')
-                            swal.fire({
-                                title:"Error!",
-                                text:e.response.data.message,
-                                type:"error",
-                                showLoaderOnConfirm: true,
-                            });
-                        })
-                },
             },
             mounted(){
             }
@@ -254,8 +225,8 @@
         function processRows(row, index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             row.buttons =
-                '<a class="btn btn-sm btn-primary text-white"  data-index="'+index+'"  data-action="editPaygroup" data-id="'+row.id+'" data-name="'+row.name+'">Update</a> &nbsp; ' +
-                '<a class="btn btn-sm btn-cyan text-white"  data-index="'+index+'"  data-action="viewPaygroup" data-id="'+row.id+'" data-name="'+row.name+'">View</a> &nbsp; ' +
+                // '<a class="btn btn-sm btn-primary text-white"  data-index="'+index+'"  data-action="editPaygroup" data-id="'+row.id+'" data-name="'+row.name+'">Update</a> &nbsp; ' +
+                '<a class="btn btn-sm btn-cyan text-white" href="/mpe/payroll-paygroup/'+ row.id + '">View</a> &nbsp; ' +
                 '<a class="btn btn-sm btn-danger text-white"   data-index="'+index+'" data-action="delete_paygroup" data-id="'+row.id+'" data-name="'+row.name+'">Delete</a>'
             // row.account_link = '<a href="/mfn/finance-entries?account=' + row.account.data.id + '">' + row.account.data.display_name + '</a>';
             // row.created_at = moment(row.created_at).format('DD MMM, YYYY');

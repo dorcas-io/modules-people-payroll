@@ -89,10 +89,9 @@
                                             <thead>
                                             <tr>
                                                 <th data-field="name">Element Name</th>
-                                                <th data-field="type">Element Type</th>
-                                                <th data-field="duration">Duration</th>
+                                                <th data-field="element_type">Element Type</th>
+                                                <th data-field="frequency">Frequency</th>
                                                 <th data-field="created_at">Added On</th>
-                                                <th data-field="account">Target Account</th>
                                                 <th data-field="taxAuthority.data.name">Authority</th>
                                                 <th data-field="buttons">Action</th>
                                             </tr>
@@ -218,8 +217,9 @@
                         default_fields:this.default_bank_detail,
                         fields: (this.bank_details),
                         authority_name:this.authority.name,
-                        payment_mode:this.authority.payment_mode,
+                        payment_mode:this.authority.payment_mode.toLowerCase(),
                     }
+                    console.log(form_data)
                     axios.put('/mfn/tax-authorities/'+this.authority.id,form_data)
                         .then(response=>{
                             $('#edit-authority').removeClass('btn-loading btn-icon')
