@@ -12,6 +12,7 @@ Route::group(['namespace' => 'Dorcas\ModulesFinanceTax\Http\Controllers', 'middl
 
     Route::get('tax-element-search','ModulesFinanceTaxController@searchElement')->name('element-search');
     Route::post('tax-elements' ,'ModulesFinanceTaxController@addElement')->name('create_element');
+    Route::get('tax-element/{id}' ,'ModulesFinanceTaxController@singleElement')->name('update_element');
 
 
 

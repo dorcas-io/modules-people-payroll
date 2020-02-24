@@ -280,4 +280,27 @@ class ModulesFinanceTaxController extends Controller
         $response = $query->send('get',['accounts']);
         return $response;
     }
+
+    public function singleElement(Request $request , Sdk $sdk, string $id){
+        try {
+
+            $this->setViewUiResponse($request);
+            $response = $sdk->createTaxResource()->send('get',['element',$id]);
+
+            if(!$response->isSuccessful()){
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException($message);
+            }
+            $element = $response->getData(true);
+            $element->accounts_name  = collect($this->getAccounts($request,$sdk)->getData(true))->whereNotIn('id',$element->target_accounts);
+            $element->target_accounts_name  = collect($this->getAccounts($request,$sdk)->getData(true))->whereIn('id',$element->target_accounts);
+            return response()->json($element,200);
+
+        }
+        catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],400);
+
+        }
+    }
+
 }

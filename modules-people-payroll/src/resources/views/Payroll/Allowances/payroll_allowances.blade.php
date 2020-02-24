@@ -177,10 +177,9 @@
             data:{
                 allowances: {!! $payroll_allowances !!},
                 authorities: {!! $payroll_authorities !!},
-                percentage_data: {  base_ratio:'',employer_base_ratio:'0'},
                 computational_fields: [{range:'',rate:'',isRest:false}],
+                percentage_data: {  base_ratio:'',employer_base_ratio:'0'},
                 fixed_data:{fixed_type:'fixed',fixed_value:''},
-
                 form_data:{
                     isPercentage:false,
                     isComputational:false,
@@ -192,6 +191,7 @@
                     allowance_type:'',
                     allowance_id:'',
                     allowance_name:'',
+
                 }
             },
             methods:{
@@ -217,44 +217,42 @@
                     }
 
                 },
-                editAllowance(id)
+                async editAllowance(id)
                 {
-                    axios.get("/mpe/payroll-allowance/" + id)
+                    const self = this;
+                    await axios.get("/mpe/payroll-allowance/" + id)
                         .then(function (response) {
                             switch(response.data[0].model){
                                 case "percent_of_base":
-                                    Payroll.form_data.isPercentage = true;
-                                    Payroll.form_data.isCompuatational = false;
-                                    Payroll.form_data.isFixed = false;
-                                    Payroll.percentage_data = JSON.parse(response.data[0].model_data)
-                                    Payroll.form_data.model_data = JSON.parse(response.data[0].model_data)
-
+                                    self.form_data.isPercentage = true;
+                                    self.form_data.isCompuatational = false;
+                                    self.form_data.isFixed = false;
+                                    self.percentage_data = JSON.parse(response.data[0].model_data) ;
+                                    self.model_data = JSON.parse(response.data[0].model_data)
                                     break;
                                 case "fixed":
-                                    Payroll.form_data.isPercentage = false;
-                                    Payroll.form_data.isCompuatational = false;
-                                    Payroll.form_data.isFixed = true;
-                                    Payroll.fixed_data = JSON.parse(response.data[0].model_data)
-                                    Payroll.form_data.model_data = JSON.parse(response.data[0].model_data)
+                                    self.form_data.isPercentage = false;
+                                    self.form_data.isCompuatational = false;
+                                    self.form_data.isFixed = true;
+                                    self.fixed_data = JSON.parse(response.data[0].model_data)
+                                    self.model_data = JSON.parse(response.data[0].model_data)
 
                                     break;
                                 case "computational":
-                                    Payroll.form_data.isPercentage = false;
-                                    Payroll.form_data.isComputational = true;
-                                    Payroll.form_data.isFixed = false;
-                                    Payroll.computational_fields = JSON.parse(response.data[0].model_data)
-                                    Payroll.form_data.model_data = JSON.parse(response.data[0].model_data)
-
+                                    self.form_data.isPercentage = false;
+                                    self.form_data.isComputational = true;
+                                    self.form_data.isFixed = false;
+                                    self.computational_fields = JSON.parse(response.data[0].model_data)
+                                    self.form_data.model_data = JSON.parse(response.data[0].model_data)
                                     break;
 
                             }
-                                 Payroll.form_data.authority_id =response.data[0].authority;
-                                 Payroll.form_data.allowance_model = response.data[0].model;
-                                 Payroll.form_data.allowance_type =response.data[0].allowance_type;
-                                 Payroll.form_data.allowance_name =response.data[0].name;
-                                 Payroll.form_data.allowance_id = id;
-                                 Payroll.form_data.authority_id =  response.data[0].authority_id;
-                                 Payroll.form_data.authority_name =  response.data[0].authority_name;
+                            self.form_data.authority_id = response.data[0].authority;
+                            self.form_data.allowance_model = response.data[0].model;
+                            self.form_data.allowance_type = response.data[0].allowance_type;
+                            self.form_data.allowance_name = response.data[0].name;
+                            self.form_data.allowance_id = id;
+                            self.form_data.authority_name = response.data[0].authority_name;
 
                             $('#payroll-allowances-edit-modal').modal('show')
 
@@ -269,7 +267,8 @@
                             showLoaderOnConfirm: true,
                         });
                     });
-                    console.log(Payroll.form_data)
+
+
                 },
                 setPayrollAllowance(){
                     dropdown.viewPayrollAllowanceModal()

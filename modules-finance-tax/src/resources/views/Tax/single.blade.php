@@ -85,7 +85,8 @@
                                                data-pagination="true"
                                                data-search="true"
                                                data-unique-id="element_id"
-                                               data-search-on-enter-key="true">
+                                               data-search-on-enter-key="true"
+                                               v-on:click="clickAction($event)">
                                             <thead>
                                             <tr>
                                                 <th data-field="name">Element Name</th>
@@ -100,6 +101,7 @@
 
                                             </tbody>
                                         </table>
+
                                         <div class="col s12" v-else>
                                             @component('layouts.blocks.tabler.empty-fullpage')
                                                 @slot('title')
@@ -121,6 +123,8 @@
                         </div>
                     </div>
                @include('modules-finance-tax::modals.add-tax-element')
+                    @include('modules-finance-tax::modals.edit-tax-element')
+
 
                 </div>
             </div>
@@ -147,6 +151,7 @@
                     element_name:null,
                     element_type:'',
                     accounts: '',
+                    unselected_accounts:'',
                     isPercent:false,
                     isFixed:false,
                     isYearly:false,
@@ -161,7 +166,7 @@
             methods: {
                 editAuthority()
                 {
-                    $('#tax-authorities-edit-modal').modal('show')
+                    $('#tax-element-edit-modal').modal('show')
                 },
                 toggleElementType(e){
                     switch(e.target.value){
@@ -246,7 +251,28 @@
                             });
                         })
                 },
+                clickAction: function (event) {
+                    let target = event.target;
+                    if (!target.hasAttribute('data-action')) {
+                        target = target.parentNode.hasAttribute('data-action') ? target.parentNode : target;
+                    }
 
+                    let action = target.getAttribute('data-action');
+                    let name = target.getAttribute('data-name');
+                    let id = target.getAttribute('data-id');
+                    let index = parseInt(target.getAttribute('data-index'), 10);
+                    switch (action) {
+                        case 'view':
+                            return true;
+                        case 'delete_element':
+                            this.deleteAuthority(id,index,name);
+                            break;
+                        case 'editElement':
+                            this.showElement(id,index,name);
+                            break;
+                    }
+
+                },
                 submitElement: function () {
                     $('#submit-element').addClass('btn-loading btn-icon')
                     // console.log(this.form_data)
@@ -278,7 +304,51 @@
                                 showLoaderOnConfirm: true,
                             });
                         })
-                }
+                },
+                showElement: function (id) {
+                    const self = this;
+                    axios.get("/mfn/tax-element/" + id)
+                        .then(function (response) {
+                            switch(response.data.frequency){
+                                case 'yearly':
+                                    self.elements_form.isYearly= true;
+                                    self.elements_form.isMonthly= false;
+                                    break;
+                                case 'monthly':
+                                    self.elements_form.isYearly= false;
+                                    self.elements_form.isMonthly= true;
+                                    break;
+                            }
+                            switch(response.data.element_type){
+                                case 'percentage':
+                                    self.elements_form.isPercent= true;
+                                    break;
+                            }
+                                self.elements_form.element_name = response.data.name,
+                                self.elements_form.element_type = response.data.element_type,
+                                self.elements_form.accounts =  response.data.target_accounts_name,
+                                self.elements_form.unselected_accounts =  response.data.accounts_name,
+                                self.elements_form.frequency= response.data.frequency,
+                                self.elements_form.frequency_year= response.data.frequency_year,
+                                self.elements_form.frequency_month= response.data.frequency_month,
+                                self.elements_form.type_data=  JSON.parse(response.data.type_data)
+
+                            $('#tax-element-edit-modal').modal('show')
+
+                        })
+                        .catch(function (error) {
+                            var message = '';
+                            console.log(error);
+                            swal.fire({
+                                title:"Error!",
+                                text:error.response.data,
+                                type:"error",
+                                showLoaderOnConfirm: true,
+                            });
+                        });
+
+
+                },
             },
             mounted(){
 
@@ -289,9 +359,15 @@
 
         function processElements(row,index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
+            row.buttons = '<a class="btn btn-sm btn-primary text-white"  data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'">Update</a> &nbsp; ' +
+                '<a class="btn btn-sm btn-danger text-white" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'">Delete</a>'
         }
 
         $(document).ready(function () {
+            $('#select-tags-accounts').selectize({
+                plugins: ['remove_button'],
+            });
+
             $('#select-tags-advanced').selectize({
                 plugins: ['remove_button'],
                 onChange: function(value) {
