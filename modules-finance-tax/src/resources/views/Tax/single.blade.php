@@ -67,9 +67,6 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#elements">Elements</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#runs">Run</a>
-                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane container active o-auto" id="elements">
@@ -84,7 +81,9 @@
                                                data-sort-class="sortable"
                                                data-pagination="true"
                                                data-search="true"
-                                               data-unique-id="element_id"
+                                               data-unique-id="id"
+                                               data-id-field="id"
+                                               id="elements_table"
                                                data-search-on-enter-key="true"
                                                v-on:click="clickAction($event)">
                                             <thead>
@@ -137,6 +136,7 @@
     <script type="text/javascript">
         const max_day = 28;
         const min_day = 1;
+        const table = $('.bootstrap-table');
       let authority = new Vue({
             el: '#tax_profile',
             data: {
@@ -265,11 +265,16 @@
                         case 'view':
                             return true;
                         case 'delete_element':
-                            this.deleteAuthority(id,index,name);
+                            this.deleteElement(id,index,name);
                             break;
                         case 'editElement':
                             this.showElement(id,index,name);
                             break;
+                        case 'view_run':
+                            location.href='/mfn/tax-runs/'+id;
+                            // this.showElement(id,index,name);
+                            break;
+
                     }
 
                 },
@@ -349,9 +354,39 @@
 
 
                 },
+                deleteElement(id,index,name){
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You are about to delete  " + name + " from this Element.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return axios.delete("/mfn/tax-element/" + id)
+                                .then(function (response) {
+                                    $('#elements_table').bootstrapTable('removeByUniqueId', response.data.id);
+                                    return swal("Deleted!", "The element was successfully deleted.", "success");
+                                }).catch(function (error) {
+                                    var message = '';
+                                    console.log(error);
+                                    swal.fire({
+                                        title:"Error!",
+                                        text:error.response.data.message,
+                                        type:"error",
+                                        showLoaderOnConfirm: true,
+                                    });
+                                });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+
+
+                    });
+                }
             },
             mounted(){
-
+                table.bootstrapTable({data: this.elements})
             },
             computed:{
             }
@@ -359,8 +394,11 @@
 
         function processElements(row,index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
-            row.buttons = '<a class="btn btn-sm btn-primary text-white"  data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'">Update</a> &nbsp; ' +
-                '<a class="btn btn-sm btn-danger text-white" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'">Delete</a>'
+            row.buttons =
+                '<a class="text-warning"  data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'"><i class="fe fe-edit-3"></i></a> &nbsp; ' +
+                '<a class="text-danger" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'"><i class="fe fe-trash-2"></i></a> &nbsp;' +
+                '<a class="btn btn-purple text-white" data-index="'+index+'" data-action="view_run" data-id="'+row.id+'" data-name="'+row.name+'">Tax Run</a>';
+
         }
 
         $(document).ready(function () {

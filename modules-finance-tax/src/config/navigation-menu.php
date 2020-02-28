@@ -17,7 +17,7 @@ return [
     ],
     'finance-tax' => [
         'title' => 'Tax',
-        'route' => 'tax-authorities',
+        'route' => 'tax-main',
         'icon' => 'fe fe-percent'
     ]
 ];

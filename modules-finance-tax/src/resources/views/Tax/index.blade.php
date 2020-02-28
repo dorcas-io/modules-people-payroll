@@ -7,13 +7,12 @@
 
     @include('layouts.blocks.tabler.alert')
 
-
     <div class="row">
 
         @include('layouts.blocks.tabler.sub-menu')
             <div class="col-md-9 col-xl-9">
                 <div class="row row-cards row-deck " >
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                                     @component('layouts.blocks.tabler.empty-fullpage')
                                         @slot('title')
                                          Tax Authorities
@@ -25,9 +24,6 @@
                                     @endcomponent
 
                         </div>
-
-
-
         </div>
 
     </div>
