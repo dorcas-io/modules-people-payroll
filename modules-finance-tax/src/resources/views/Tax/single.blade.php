@@ -166,7 +166,7 @@
             methods: {
                 editAuthority()
                 {
-                    $('#tax-element-edit-modal').modal('show')
+                    $('#tax-authorities-edit-modal').modal('show')
                 },
                 toggleElementType(e){
                     switch(e.target.value){
@@ -311,6 +311,7 @@
                         })
                 },
                 showElement: function (id) {
+                    $('#edit-button').addClass('btn-loading btn-icon')
                     const self = this;
                     axios.get("/mfn/tax-element/" + id)
                         .then(function (response) {
@@ -339,6 +340,8 @@
                                 self.elements_form.type_data=  JSON.parse(response.data.type_data)
 
                             $('#tax-element-edit-modal').modal('show')
+                            $('#edit-button').removeClass('btn-loading btn-icon')
+
 
                         })
                         .catch(function (error) {
@@ -395,9 +398,12 @@
         function processElements(row,index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             row.buttons =
-                '<a class="text-warning"  data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'"><i class="fe fe-edit-3"></i></a> &nbsp; ' +
-                '<a class="text-danger" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'"><i class="fe fe-trash-2"></i></a> &nbsp;' +
-                '<a class="btn btn-purple text-white" data-index="'+index+'" data-action="view_run" data-id="'+row.id+'" data-name="'+row.name+'">Tax Run</a>';
+                '<a class="btn btn-warning text-white" id="edit-button" data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'">Edit</a> &nbsp; ' +
+                    '<br>'+
+                '<a class=" btn btn-danger text-white" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'">Delete</a> &nbsp;' +
+                '<br>'+
+
+                '<a class="btn btn-primary text-white"  data-index="'+index+'" data-action="view_run" data-id="'+row.id+'" data-name="'+row.name+'">Tax Run</a>';
 
         }
 
