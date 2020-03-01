@@ -181,17 +181,21 @@ class ModulesPeoplePayrollController extends Controller
         $sdk = $sdk ?: app(Sdk::class);
         $company = auth()->user()->company(true, true);
         # get the company
-
-        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
-            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-                ->send('get', ['allowance']);
-            if (!$response->isSuccessful()) {
-                return null;
-            }
-            return collect($response->getData())->map(function ($allowances) {
-                return (object) $allowances;
-            });
-        });
+//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
+//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//                ->send('get', ['allowance']);
+//            if (!$response->isSuccessful()) {
+//                return null;
+//            }
+//            return collect($response->getData())->map(function ($allowances) {
+//                return (object) $allowances;
+//            });
+//        });
+        $allowances = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+            ->send('get', ['allowance']);
+        if (!$allowances->isSuccessful()) {
+            return null;
+        }
         return $allowances;
     }
 
@@ -409,7 +413,6 @@ class ModulesPeoplePayrollController extends Controller
         # set the data
         return response()->json($this->data);
     }
-
     public function createPaygroup(Request $request, Sdk $sdk){
         try{
             $resource = $sdk->createPayrollResource();
@@ -444,6 +447,30 @@ class ModulesPeoplePayrollController extends Controller
         }
     }
 
+    private function getPaygroupAllowances(Sdk $sdk, string $id){
+    $sdk = $sdk ?: app(Sdk::class);
+    # get the company
+    $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+        ->send('get', ['paygroup','allowances',$id]);
+    if (!$response->isSuccessful()) {
+        return null;
+    }
+
+    return $response;
+}
+
+    private function getPaygroupEmployees(Sdk $sdk, string $id){
+        $sdk = $sdk ?: app(Sdk::class);
+        # get the company
+        $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+            ->send('get', ['paygroup','employees',$id]);
+        if (!$response->isSuccessful()) {
+            return null;
+        }
+
+        return $response;
+    }
+
     public function singlePaygroup(Request $request , Sdk $sdk, string $id){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll ';
@@ -452,19 +479,27 @@ class ModulesPeoplePayrollController extends Controller
             $this->data['args'] = $request->query->all();
             $this->setViewUiResponse($request);
             $response = $sdk->createPayrollResource()->send('get',['paygroup',$id]);
-
+            $employees = $this->getEmployees();
+            $allowances = $this->getPayrollAlowances($sdk,$id);
+            $paygroup_allowances = $this->getPaygroupAllowances($sdk,$id);
+            $paygroup_employees = $this->getPaygroupEmployees($sdk,$id);
             if(!$response->isSuccessful()){
-
                 $response = (tabler_ui_html_response(['Could not find the Payroll Paygroup']))->setType(UiResponse::TYPE_ERROR);
                 return redirect(url()->route('payroll-paygroup'))->with('UiResponse', $response);
             }
+
             $paygroup = $response->getData(true);
             $this->data['paygroup'] = $paygroup;
+            $this->data['employees'] = $employees;
+            $this->data['allowances'] = $allowances->getData(true);
+            $this->data['paygroup_allowances'] = $paygroup_allowances->getData(true);
+            $this->data['paygroup_employees'] = $paygroup_employees->getData(true);
+
             return view('modules-people-payroll::Payroll/Paygroup/single', $this->data);
 
         }
         catch (\Exception $e){
-            return view('modules-finance-tax::Tax/single',$this->data);
+            return view('modules-people-payroll::Payroll/Paygroup/single', $this->data);
         }
     }
 
@@ -513,4 +548,74 @@ class ModulesPeoplePayrollController extends Controller
         # set the data
         return response()->json($this->data);
         }
+
+    public function addEmployees(Request $request, Sdk $sdk, string $id){
+        try {
+            $resource = $sdk->createPayrollResource();
+            $path = ['paygroup','employees',$id];
+            $resource = $resource->addBodyParam('employees',$request->employees);
+            $response = $resource->send('post',$path);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while adding the Employee(s) to  Paygroup ' . $message);
+            }
+            return response()->json(['message' => 'Employee(s) Successfully added '], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function deleteEmployees(Request $request, Sdk $sdk, string $id){
+        try {
+            $resource = $sdk->createPayrollResource();
+            $path = ['paygroup','employees',$id];
+            $resource = $resource->addBodyParam('employees',$request->employees);
+            $response = $resource->send('delete',$path);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while Deleting the Employee(s) From  Paygroup ' . $message);
+            }
+            return response()->json(['message' => 'Employee(s) Successfully Deleted '], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function addAllowances(Request $request, Sdk $sdk, string $id){
+            try {
+                $resource = $sdk->createPayrollResource();
+                $path = ['paygroup','allowances',$id];
+                $resource = $resource->addBodyParam('allowances',$request->allowances);
+                $response = $resource->send('post',$path);
+                if (!$response->isSuccessful()) {
+                    $message = $response->errors[0]['title'] ?? '';
+                    throw new \RuntimeException('Failed while adding the Allowance(s) to  Paygroup ' . $message);
+
+                }
+                return response()->json(['message' => 'Allowance(s) Successfully added '], 200);
+
+            } catch (\Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 400);
+            }
+        }
+
+
+    public function deleteAllowances(Request $request, Sdk $sdk, string $id){
+        try {
+            $resource = $sdk->createPayrollResource();
+            $path = ['paygroup','allowances',$id];
+            $resource = $resource->addBodyParam('allowances',$request->allowances);
+            $response = $resource->send('delete',$path);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while Deleting the Allowance(s) From  Paygroup ' . $message);
+            }
+            return response()->json(['message' => 'Allowance(s) Successfully Deleted '], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }

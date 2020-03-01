@@ -46,11 +46,13 @@
                             <input type="number"  class=" col-md-4 form-control mr-4 mt-3"  v-model="elements_form.type_data.value " placeholder="Add Value eg (5) " required/>
                         </div>
                         <div>
-                        <label class="form-label">Select Accounts</label>
-                        <select name="tags" id="select-tags-accounts" @change="getAccounts($event)" class="form-select" multiple required>
-                            <option v-for=" (item, index) in elements_form.accounts" :value="item.id" >@{{ item.display_name }}</option>
-{{--                            <option v-for="non_account in elements_form.unselected_accounts" :value="non_account.id" selected>@{{ non_account.display_name }}</option>--}}
-                        </select>
+                            <div class="form-group col-md-12">
+                                <label class="form-label">Select Accounts</label>
+                                <select  id="select-tags-accounts" @change="getAccounts($event)" class="form-select" multiple required>
+                                    <option v-for="account in accounts" v-if="inArray(account,elements_form.accounts)" :value="account.id">@{{ account.display_name }}</option>
+                                </select>
+
+                            </div>
                         </div>
                     </fieldset>
                 </form>

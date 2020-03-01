@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label">Select Accounts</label>
-                            <select name="tags-advanced" id="select-tags-advanced" @change="getAccounts($event)" class="form-select" multiple required>
+                            <select  id="select-tags-advanced" @change="getAccounts($event)" class="form-select" multiple required>
                                 <option v-for="account in accounts" :value="account.id">@{{ account.display_name }}</option>
                             </select>
 

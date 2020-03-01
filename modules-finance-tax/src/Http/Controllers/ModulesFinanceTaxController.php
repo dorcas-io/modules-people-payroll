@@ -292,9 +292,9 @@ class ModulesFinanceTaxController extends Controller
                 throw new \RuntimeException($message);
             }
             $element = $response->getData(true);
-            $element->accounts_name  = collect($this->getAccounts($request,$sdk)->getData(true))->whereNotIn('id',$element->target_accounts);
+            $element->accounts_name  =  collect($this->getAccounts($request,$sdk)->getData(true))->whereNotIn('id',$element->target_accounts);
             $element->target_accounts_name  = collect($this->getAccounts($request,$sdk)->getData(true))->whereIn('id',$element->target_accounts);
-            return response()->json($element,200);
+            return response()->json([$element],200);
 
         }
         catch (\Exception $e){

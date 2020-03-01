@@ -33,15 +33,15 @@
                         <div class="card-body">
                             <div class="col-sm-12 col-lg-12">
                                 Payment Mode: &nbsp;{{$authority->payment_mode}}
-                                    <table class="table card-table">
-                                        <tbody>
-                                        <span class="badge badge-secondary">Primary Bank </span>
-                                        <tr v-if="default_bank_detail !== null " >
-                                            <td>@{{ default_bank_detail.bank }}</td>
-                                            <td>@{{ default_bank_detail.account }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <table class="table card-table">
+                                    <tbody>
+                                    <span class="badge badge-secondary">Primary Bank </span>
+                                    <tr v-if="default_bank_detail !== null " >
+                                        <td>@{{ default_bank_detail.bank }}</td>
+                                        <td>@{{ default_bank_detail.account }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                                 <table class="table card-table">
                                     <tbody>
                                     <span class="badge badge-primary">Secondary Bank </span>
@@ -106,7 +106,7 @@
                                                 @slot('title')
                                                     No Elements
                                                 @endslot
-                                                    Add Tax elements to generate Tax Runs, and keep track of your Taxes.
+                                                Add Tax elements to generate Tax Runs, and keep track of your Taxes.
                                                 @slot('buttons')
                                                     <a class="btn btn-primary btn-sm" href="#" v-on:click.prevent="addElement" >Add Element</a>
                                                 @endslot
@@ -121,9 +121,10 @@
                             </div>
                         </div>
                     </div>
-               @include('modules-finance-tax::modals.add-tax-element')
-                    @include('modules-finance-tax::modals.edit-tax-element')
-
+                    @include('modules-finance-tax::modals.add-tax-element')
+                    <div v-if="showModal">
+                        @include('modules-finance-tax::modals.edit-tax-element')
+                    </div>
 
                 </div>
             </div>
@@ -136,31 +137,30 @@
     <script type="text/javascript">
         const max_day = 28;
         const min_day = 1;
-        const table = $('.bootstrap-table');
-      let authority = new Vue({
+        let authority = new Vue({
             el: '#tax_profile',
             data: {
-                authority: {!! json_encode($authority) !!},
-                elements: {!! json_encode($elements) !!},
-                accounts: {!! json_encode($accounts) !!},
-                default_bank_detail:{!! ($authority->default_payment_details == null ?  "{ bank: '', account: ''},": $authority->default_payment_details )!!},
-                bank_details:{!! ($authority->payment_details == null ? '[]': $authority->payment_details ) !!},
-                defaultPhoto: "{{ cdn('images/avatar/avatar-6.png') }}",
-                backgroundImage: "{{ cdn('images/gallery/imani-clovis-547617-unsplash.jpg') }}",
-                elements_form:{
-                    element_name:null,
-                    element_type:'',
-                    accounts: '',
-                    unselected_accounts:'',
-                    isPercent:false,
-                    isFixed:false,
-                    isYearly:false,
-                    isMonthly:false,
-                    frequency:null,
-                    frequency_year:null,
-                    frequency_month:null,
-                    type_data: {element_type: '', value: ''}
-
+                "authority": {!! json_encode($authority) !!},
+                "elements": {!! json_encode($elements) !!},
+                "accounts": {!! json_encode($accounts) !!},
+                "default_bank_detail":{!! ($authority->default_payment_details == null ?  "{ bank: '', account: ''},": $authority->default_payment_details )!!},
+                "bank_details":{!! ($authority->payment_details == null ? '[]': $authority->payment_details ) !!},
+                "defaultPhoto": "{{ cdn('images/avatar/avatar-6.png') }}",
+                "backgroundImage": "{{ cdn('images/gallery/imani-clovis-547617-unsplash.jpg') }}",
+                "single_element":{},
+                "showModal":false,
+                "elements_form":{
+                    "element_name":null,
+                    "element_type":'',
+                    "isPercent":false,
+                    "isFixed":false,
+                    "isYearly":false,
+                    "isMonthly":false,
+                    "frequency":null,
+                    "frequency_year":null,
+                    "frequency_month":null,
+                    "unselected_accounts": null,
+                    "type_data": {"element_type": '', "value": ''},
                 }
             },
             methods: {
@@ -198,7 +198,7 @@
                 validateDay(event){
                     let input_val = event.target.value;
                     if(input_val > max_day){
-                       this.elements_form.frequency_month = max_day
+                        this.elements_form.frequency_month = max_day
                     }
 
                 },
@@ -224,12 +224,12 @@
                         authority_name:this.authority.name,
                         payment_mode:this.authority.payment_mode.toLowerCase(),
                     }
-                    console.log(form_data)
+                    console.log(form_data);
                     axios.put('/mfn/tax-authorities/'+this.authority.id,form_data)
                         .then(response=>{
-                            $('#edit-authority').removeClass('btn-loading btn-icon')
+                            $('#edit-authority').removeClass('btn-loading btn-icon');
                             form_data = {};
-                            $('#tax-element-add-modal').modal('hide')
+                            $('#tax-element-add-modal').modal('hide');
 
                             swal({
                                 title:"Success!",
@@ -250,6 +250,8 @@
                                 showLoaderOnConfirm: true,
                             });
                         })
+
+
                 },
                 clickAction: function (event) {
                     let target = event.target;
@@ -311,11 +313,14 @@
                         })
                 },
                 showElement: function (id) {
-                    $('#edit-button').addClass('btn-loading btn-icon')
+                    $('#edit-button').addClass('btn-loading btn-icon');
                     const self = this;
+                    self.showModal = true;
                     axios.get("/mfn/tax-element/" + id)
                         .then(function (response) {
-                            switch(response.data.frequency){
+                            const {frequency, type_data, name, element_type, accounts_name, target_accounts, frequency_year, frequency_month} = response.data[0];
+                            self.single_element = response.data[0];
+                            switch(frequency){
                                 case 'yearly':
                                     self.elements_form.isYearly= true;
                                     self.elements_form.isMonthly= false;
@@ -324,24 +329,21 @@
                                     self.elements_form.isYearly= false;
                                     self.elements_form.isMonthly= true;
                                     break;
-                            }
-                            switch(response.data.element_type){
-                                case 'percentage':
-                                    self.elements_form.isPercent= true;
+                                default:
                                     break;
                             }
-                                self.elements_form.element_name = response.data.name,
-                                self.elements_form.element_type = response.data.element_type,
-                                self.elements_form.accounts =  response.data.target_accounts_name,
-                                self.elements_form.unselected_accounts =  response.data.accounts_name,
-                                self.elements_form.frequency= response.data.frequency,
-                                self.elements_form.frequency_year= response.data.frequency_year,
-                                self.elements_form.frequency_month= response.data.frequency_month,
-                                self.elements_form.type_data=  JSON.parse(response.data.type_data)
-
-                            $('#tax-element-edit-modal').modal('show')
+                            if (element_type === 'percentage') {
+                                self.elements_form.isPercent= true;
+                            }
+                            self.form_data = response.data;
+                            self.elements_form.element_name =  name;
+                            self.elements_form.element_type = element_type;
+                            self.elements_form.accounts =  target_accounts;
+                            self.elements_form.frequency= frequency;
+                            self.elements_form.frequency_year= frequency_year;
+                            self.elements_form.frequency_month= frequency_month;
+                            self.elements_form.type_data=  JSON.parse(type_data);
                             $('#edit-button').removeClass('btn-loading btn-icon')
-
 
                         })
                         .catch(function (error) {
@@ -354,8 +356,8 @@
                                 showLoaderOnConfirm: true,
                             });
                         });
-
-
+                    $('#tax-element-edit-modal').modal('show');
+                    console.log(self.elements_form)
                 },
                 deleteElement(id,index,name){
                     Swal.fire({
@@ -386,10 +388,16 @@
 
 
                     });
+                },
+                inArray: function(needle, haystack) {
+                    var length = haystack.length;
+                    for(var i = 0; i < length; i++) {
+                        if(haystack[i] == needle) return true;
+                    }
+                    return false;
                 }
             },
             mounted(){
-                table.bootstrapTable({data: this.elements})
             },
             computed:{
             }
@@ -399,7 +407,7 @@
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             row.buttons =
                 '<a class="btn btn-warning text-white" id="edit-button" data-index="'+index+'"  data-action="editElement" data-id="'+row.id+'" data-name="'+row.name+'">Edit</a> &nbsp; ' +
-                    '<br>'+
+                '<br>'+
                 '<a class=" btn btn-danger text-white" data-index="'+index+'" data-action="delete_element" data-id="'+row.id+'" data-name="'+row.name+'">Delete</a> &nbsp;' +
                 '<br>'+
 

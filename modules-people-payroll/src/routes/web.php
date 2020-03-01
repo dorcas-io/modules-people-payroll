@@ -26,9 +26,12 @@ Route::group(['namespace' => 'Dorcas\ModulesPeoplePayroll\Http\Controllers', 'mi
     Route::get('payroll-paygroup/{id}', 'ModulesPeoplePayrollController@singlePaygroup')->name('payroll-single-paygroup');
     Route::put('payroll-paygroup/{id}', 'ModulesPeoplePayrollController@updatePaygroup')->name('payroll-update_paygroup');
     Route::delete('payroll-paygroup/{id}', 'ModulesPeoplePayrollController@deletePaygroup')->name('payroll-delete_paygroup');
-
-
     Route::get('payroll-employee-search','ModulesPeoplePayrollController@searchEmployee')->name('payroll-employee-search');
+    Route::post('payroll-employee-add/{id}','ModulesPeoplePayrollController@addEmployees')->name('payroll-employee-add');
+    Route::post('payroll-employee-delete/{id}','ModulesPeoplePayrollController@deleteEmployees')->name('payroll-employee-delete');
+    Route::post('payroll-allowances-add/{id}','ModulesPeoplePayrollController@addAllowances')->name('payroll-allowance-add');
+    Route::post('payroll-allowance-delete/{id}','ModulesPeoplePayrollController@deleteAllowances')->name('payroll-allowances-delete');
+
 
 //    Route::get('tax-authorities/{id}', 'ModulesFinanceTaxController@singleAuthority')->name('single_authority');
 //    Route::post('tax-authorities', 'ModulesFinanceTaxController@createAuthority')->name('create_authority');
