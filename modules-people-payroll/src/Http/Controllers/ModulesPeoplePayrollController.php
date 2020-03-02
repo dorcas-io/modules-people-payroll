@@ -618,4 +618,54 @@ class ModulesPeoplePayrollController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
+    private function getPayrollTransactions(Sdk $sdk, string $id = null){
+        $sdk = $sdk ?: app(Sdk::class);
+        $company = auth()->user()->company(true, true);
+        # get the company
+//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
+//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//                ->send('get', ['allowance']);
+//            if (!$response->isSuccessful()) {
+//                return null;
+//            }
+//            return collect($response->getData())->map(function ($allowances) {
+//                return (object) $allowances;
+//            });
+//        });
+        $transaction = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+            ->send('get', ['transaction']);
+        if (!$transaction->isSuccessful()) {
+            return null;
+        }
+        return $allowances;
+    }
+    public function transactionIndex(Request $request, Sdk $sdk){
+        try {
+            $this->data['page']['title'] .= ' &rsaquo; Payroll Transactions';
+            $this->data['header']['title'] = 'People Payroll Transactions';
+            $this->data['submenuAction'] = '';
+            $this->setViewUiResponse($request);
+            $this->data['args'] = $request->query->all();
+            $this->data['payroll_transactions'] = $this->getPayrollTransactions($sdk);
+            $this->data['employees'] = $this->getEmployees($sdk);
+            switch ($this->data){
+                case !empty($this->data['payroll_transactions']):
+                    $this->data['submenuAction'] .= '
+                    <div class="dropdown"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions</button>
+                            <div class="dropdown-menu">
+                          <a href="#" data-toggle="modal" data-target="#payroll-transaction-add-modal" class="dropdown-item">Add Payroll Transaction</a>
+                          </div>
+                          </div>';
+
+            }
+            return view('modules-people-payroll::Payroll/Allowances/payroll_allowances', $this->data);
+
+        }
+        catch (\Exception $e){
+            $this->setViewUiResponse($request);
+            return view('modules-people-payroll::Payroll/Authority/payroll_authority', $this->data);
+
+        }
+    }
 }

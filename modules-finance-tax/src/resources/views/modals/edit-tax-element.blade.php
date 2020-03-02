@@ -47,13 +47,13 @@
                         </div>
                         <div>
                             <div class="form-group col-md-12">
-                                <label class="form-label">Select Accounts</label>
-                                <select  id="select-tags-accounts" @change="getAccounts($event)" class="form-select" multiple required>
-                                    <option v-for="account in accounts" v-if="inArray(account,elements_form.accounts)" :value="account.id">@{{ account.display_name }}</option>
+                                </div>
+                                <select  id="select-tags-advanced"  @change="getSelectedAccounts($event)" class="form-control" multiple required>
+                                    <option v-for="account in accounts" v-if="elements_form.target_accounts.includes(account.id)"  selected :value="account.id">@{{ account.display_name }}</option>
+                                    <option v-for="account in accounts" v-if="!elements_form.target_accounts.includes(account.id)"   :value="account.id">@{{ account.display_name }}</option>
                                 </select>
 
                             </div>
-                        </div>
                     </fieldset>
                 </form>
             </div>

@@ -122,9 +122,8 @@
                         </div>
                     </div>
                     @include('modules-finance-tax::modals.add-tax-element')
-                    <div v-if="showModal">
+
                         @include('modules-finance-tax::modals.edit-tax-element')
-                    </div>
 
                 </div>
             </div>
@@ -159,7 +158,9 @@
                     "frequency":null,
                     "frequency_year":null,
                     "frequency_month":null,
+                    "accounts": null,
                     "unselected_accounts": null,
+                    "target_accounts":[],
                     "type_data": {"element_type": '', "value": ''},
                 }
             },
@@ -206,6 +207,7 @@
                     this.elements_form.accounts = value
                     console.log(this.elements_form.accounts)
                 },
+
                 addElement(){
                     $('#tax-element-add-modal').modal('show')
                 },
@@ -234,6 +236,36 @@
                             swal({
                                 title:"Success!",
                                 text:"Tax Authority Successfully Updated",
+                                type:"success",
+                                showLoaderOnConfirm: true,
+                            }).then(function () {
+                                location.reload()
+                            });
+                        })
+                        .catch(e=>{
+                            console.log(e.response.data);
+                            $('#edit-authority').removeClass('btn-loading btn-icon')
+                            swal.fire({
+                                title:"Error!",
+                                text:e.response.data.message,
+                                type:"error",
+                                showLoaderOnConfirm: true,
+                            });
+                        })
+
+
+                },
+                updateElement: function () {
+                    $('#edit-element').addClass('btn-loading btn-icon')
+                    axios.put('/mfn/tax-element/'+this.authority.id,this.elements_form)
+                        .then(response=>{
+                            $('#edit-element').removeClass('btn-loading btn-icon');
+                            form_data = {};
+                            $('#tax-element-edit-modal').modal('hide');
+
+                            swal({
+                                title:"Success!",
+                                text:"Tax Element Successfully Updated",
                                 type:"success",
                                 showLoaderOnConfirm: true,
                             }).then(function () {
@@ -312,13 +344,11 @@
                             });
                         })
                 },
-                showElement: function (id) {
-                    $('#edit-button').addClass('btn-loading btn-icon');
+               showElement: async function (id) {
                     const self = this;
-                    self.showModal = true;
-                    axios.get("/mfn/tax-element/" + id)
+                   await  axios.get("/mfn/tax-element/" + id)
                         .then(function (response) {
-                            const {frequency, type_data, name, element_type, accounts_name, target_accounts, frequency_year, frequency_month} = response.data[0];
+                            const {frequency, type_data, name, element_type, accounts_name, target_accounts, target_accounts_name, frequency_year, frequency_month} = response.data[0];
                             self.single_element = response.data[0];
                             switch(frequency){
                                 case 'yearly':
@@ -338,12 +368,14 @@
                             self.form_data = response.data;
                             self.elements_form.element_name =  name;
                             self.elements_form.element_type = element_type;
-                            self.elements_form.accounts =  target_accounts;
+                            self.elements_form.target_accounts =  target_accounts;
+                            self.elements_form.accounts =  target_accounts_name;
+                            self.elements_form.unselected_accounts =  accounts_name;
                             self.elements_form.frequency= frequency;
                             self.elements_form.frequency_year= frequency_year;
                             self.elements_form.frequency_month= frequency_month;
                             self.elements_form.type_data=  JSON.parse(type_data);
-                            $('#edit-button').removeClass('btn-loading btn-icon')
+                            $('#tax-element-edit-modal').modal('show');
 
                         })
                         .catch(function (error) {
@@ -356,9 +388,13 @@
                                 showLoaderOnConfirm: true,
                             });
                         });
-                    $('#tax-element-edit-modal').modal('show');
-                    console.log(self.elements_form)
-                },
+                   console.log('edit data')
+                   console.log(self.elements_form.accounts)
+                   console.log('create data')
+
+                   console.log(self.accounts)
+
+               },
                 deleteElement(id,index,name){
                     Swal.fire({
                         title: "Are you sure?",
@@ -389,10 +425,15 @@
 
                     });
                 },
-                inArray: function(needle, haystack) {
-                    var length = haystack.length;
-                    for(var i = 0; i < length; i++) {
-                        if(haystack[i] == needle) return true;
+                inArray(needle, haystack) {
+                    if(haystack === null){
+                        return;
+                    }
+                    let length = haystack.length;
+                    for(let i = 0; i < length; i++) {
+                        if(haystack[i] === needle)
+                            console.log(needle);
+                            return true;
                     }
                     return false;
                 }
@@ -418,6 +459,10 @@
         $(document).ready(function () {
             $('#select-tags-accounts').selectize({
                 plugins: ['remove_button'],
+                onChange: function(value) {
+                    console.log(value)
+                    authority.getSelectedAccounts(value);
+                }
             });
 
             $('#select-tags-advanced').selectize({

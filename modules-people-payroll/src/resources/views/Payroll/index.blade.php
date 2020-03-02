@@ -49,7 +49,18 @@
                     @endcomponent
 
                 </div>
+                <div class="col-sm-4">
+                    @component('layouts.blocks.tabler.empty-fullpage')
+                        @slot('title')
+                            Payroll Transactions
+                        @endslot
+                        <a href="{{route('payroll-transactions')}}" class="btn btn-primary">View </a>
+                        &nbsp;
+                        @slot('buttons')
+                        @endslot
+                    @endcomponent
 
+                </div>
 
 
             </div>
