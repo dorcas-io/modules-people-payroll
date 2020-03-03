@@ -175,7 +175,7 @@
        let Payroll =  new Vue({
             el: '#payroll_allowance',
             data:{
-                allowances: {!! $payroll_allowances !!},
+{{--                allowances: {!! $payroll_allowances !!},--}}
                 authorities: {!! $payroll_authorities !!},
                 computational_fields: [{range:'',rate:'',isRest:false}],
                 percentage_data: {  base_ratio:'',employer_base_ratio:'0'},

@@ -33,6 +33,12 @@ Route::group(['namespace' => 'Dorcas\ModulesPeoplePayroll\Http\Controllers', 'mi
     Route::post('payroll-allowance-delete/{id}','ModulesPeoplePayrollController@deleteAllowances')->name('payroll-allowances-delete');
 
     Route::get('payroll-transactions','ModulesPeoplePayrollController@transactionIndex')->name('payroll-transactions');
+    Route::post('payroll-transaction','ModulesPeoplePayrollController@createTransaction')->name('payroll-transaction');
+    Route::get('payroll-transaction-search','ModulesPeoplePayrollController@searchTransaction')->name('payroll-transaction-search');
+    Route::get('payroll-transaction/{id}', 'ModulesPeoplePayrollController@singleTransaction')->name('payroll-single-transaction');
+    Route::put('payroll-transaction/{id}','ModulesPeoplePayrollController@updateTransaction')->name('payroll-transaction');
+    Route::delete('payroll-transaction/{id}','ModulesPeoplePayrollController@deleteTransaction')->name('payroll-transaction');
+
 
 
 //    Route::get('tax-authorities/{id}', 'ModulesFinanceTaxController@singleAuthority')->name('single_authority');

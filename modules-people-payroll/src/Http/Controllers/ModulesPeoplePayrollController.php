@@ -206,7 +206,7 @@ class ModulesPeoplePayrollController extends Controller
             $this->data['submenuAction'] = '';
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
-            $this->data['payroll_allowances'] = $this->getPayrollAlowances($sdk);
+            $this->data['payroll_allowances'] = $this->getPayrollAlowances($sdk)->getData(true);
             $this->data['payroll_authorities'] = $this->getPeoplePayrollAuthorities($sdk);
             switch ($this->data){
                 case !empty($this->data['payroll_allowances']):
@@ -304,8 +304,8 @@ class ModulesPeoplePayrollController extends Controller
             if(!$response->isSuccessful()){
                 throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find the allowance');
             }
-            $authority = $response->getData(true);
-            return response()->json([$authority, 200]);
+            $allowance = $response->getData(true);
+            return response()->json([$allowance, 200]);
         }
         catch (\Exception $e){
             return response()->json(['message' => $e->getMessage()], 400);
@@ -638,8 +638,35 @@ class ModulesPeoplePayrollController extends Controller
         if (!$transaction->isSuccessful()) {
             return null;
         }
-        return $allowances;
+        return $transaction;
     }
+
+    public function createTransaction(Request $request, Sdk $sdk){
+        try{
+            $resource = $sdk->createPayrollResource();
+            $resource = $resource->addBodyParam('remarks',$request->remarks)
+                ->addBodyParam('employee',$request->employee)
+                ->addBodyParam('status_type',$request->status)
+                ->addBodyParam('end_time',$request->end_date)
+                ->addBodyParam('amount_type',$request->transaction_type)
+                ->addBodyParam('amount',$request->amount);
+            $response = $resource->send('post',['transaction']);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while adding the Payroll Transaction '.$message);
+
+            }
+            return response()->json(['message'=>'Payroll Transaction Created Successfully'],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],400);
+
+
+        }
+    }
+
+
     public function transactionIndex(Request $request, Sdk $sdk){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Transactions';
@@ -647,25 +674,107 @@ class ModulesPeoplePayrollController extends Controller
             $this->data['submenuAction'] = '';
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
-            $this->data['payroll_transactions'] = $this->getPayrollTransactions($sdk);
+
+            $this->data['payroll_transactions'] = $this->getPayrollTransactions($sdk)->getData(true);
+
             $this->data['employees'] = $this->getEmployees($sdk);
             switch ($this->data){
                 case !empty($this->data['payroll_transactions']):
                     $this->data['submenuAction'] .= '
                     <div class="dropdown"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions</button>
                             <div class="dropdown-menu">
-                          <a href="#" data-toggle="modal" data-target="#payroll-transaction-add-modal" class="dropdown-item">Add Payroll Transaction</a>
+                          <a href="#" data-toggle="modal" data-target="#payroll-transactions-add-modal" class="dropdown-item">Add Payroll Transaction</a>
                           </div>
                           </div>';
 
             }
-            return view('modules-people-payroll::Payroll/Allowances/payroll_allowances', $this->data);
+            return view('modules-people-payroll::Payroll/Transactions/payroll_transaction', $this->data);
 
         }
         catch (\Exception $e){
             $this->setViewUiResponse($request);
-            return view('modules-people-payroll::Payroll/Authority/payroll_authority', $this->data);
+            return view('modules-people-payroll::Payroll/Transactions/payroll_transaction', $this->data);
 
+        }
+    }
+
+    public function searchTransaction(Request $request, Sdk $sdk)
+    {
+
+        $search = $request->query('search', '');
+        $offset = (int) $request->query('offset', 0);
+        $limit = (int) $request->query('limit', 10);
+
+        # get the request parameters
+        $path = ['transaction'];
+
+        $query = $sdk->createPayrollResource();
+        $query = $query->addQueryArgument('limit', $limit)
+            ->addQueryArgument('page', get_page_number($offset, $limit));
+        if (!empty($search)) {
+            $query = $query->addQueryArgument('search', $search);
+        }
+        $response = $query->send('get', $path);
+        # make the request
+        if (!$response->isSuccessful()) {
+            // do something here
+            throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find any matching transaction.');
+        }
+        $this->data['total'] = $response->meta['pagination']['total'] ?? 0;
+        # set the total
+        $this->data['rows'] = $response->data;
+        # set the data
+        return response()->json($this->data);
+    }
+
+    public function singleTransaction(Request $request, Sdk $sdk, string $id){
+        try {
+            $response = $sdk->createPayrollResource()->send('get',['transaction',$id]);
+            if(!$response->isSuccessful()){
+                throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find the Transaction');
+            }
+            $transaction = $response->getData(true);
+            return response()->json([$transaction, 200]);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
+
+        }
+    }
+
+    public function updateTransaction(Request $request, Sdk $sdk, string $id){
+        try {
+            $resource = $sdk->createPayrollResource();
+            $resource = $resource->addBodyParam('remarks',$request->remarks)
+                ->addBodyParam('employee',$request->selected_employee)
+                ->addBodyParam('status_type',$request->status_type)
+                ->addBodyParam('end_time',$request->end_date)
+                ->addBodyParam('amount_type',$request->transaction_type)
+                ->addBodyParam('amount',$request->amount);
+            $response = $resource->send('put', ['transaction',$id]);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while adding the Payroll Transaction ' . $message);
+
+            }
+            return response()->json(['message' => 'Payroll Transaction Updated Successfully'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function deleteTransaction(Request $request, Sdk $sdk, string $id){
+        try{
+            $resource = $sdk->createPayrollResource();
+            $response = $resource->send('delete', ['transaction',$id]);
+            if (!$response->isSuccessful()) {
+                throw new \RuntimeException($response->errors[0]['title'] ?? 'Failed while deleting the Transaction.');
+            }
+            $this->data = $response->getData();
+            return response()->json($this->data);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
         }
     }
 }
