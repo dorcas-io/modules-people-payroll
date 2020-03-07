@@ -16,7 +16,7 @@
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="transaction">Employees</label>
                                 <select   class="form-control custom-select selectized" tabindex="-1" v-model="form_data.selected_employee" required >
-                                    <option selected :value="form_data.employee.id" > @{{ form_data.employee.firstname + form_data.employee.staff_code  }} </option>
+                                    <option selected :value="form_data.employee.id" > @{{ form_data.employee.firstname + form_data.employee.lastname  }} </option>
                                     <option :value="employee.id" v-for="employee in employees">@{{ employee.firstname + employee.lastname }}</option>
                                 </select>
 

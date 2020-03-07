@@ -79,6 +79,7 @@
                     percentage_data: {  base_ratio:'',employer_base_ratio:'0'},
                     computational_fields: [{range:'',rate:'',isRest:false}],
                     fixed_data:{fixed_type:'fixed',fixed_value:''},
+                    isHidden:true,
                     form_data:{
                         isPercentage:false,
                         isComputational:false,
@@ -124,6 +125,13 @@
                             break;
 
                     }
+                },
+                disableAddMore(item){
+                    this.isHidden = false;
+                    item.range = 0;
+                },
+                toggleTaxable(item){
+                    item.rate = 0;
                 },
                 submitForm: function () {
                     $('#submit-allowance').addClass('btn-loading btn-icon')

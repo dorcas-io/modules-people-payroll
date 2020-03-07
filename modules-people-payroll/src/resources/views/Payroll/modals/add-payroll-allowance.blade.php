@@ -25,7 +25,7 @@
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="allowance" >Authority ( Optional)  </label>
                                 <select  class="form-control custom-select selectized" tabindex="-1"  v-model="form_data.authority_id" >
-                                    <option selected value="null">Select Authority </option>
+                                    <option selected value="null" disabled>Select Authority </option>
                                     <option  :value="authority.id" v-for="authority in authorities">@{{ authority.name }}</option>
                                 </select>
 
@@ -52,21 +52,26 @@
                             <div class="form-group col-md-12" v-if="form_data.isComputational" >
                                 <label class="form-label" >Computational </label>
                                 <div class="form-row" v-for="(item,index) in computational_fields" >
+
                                     <div class="col-md-3 mr-4 mt-3">
                                         <input type="text" placeholder="Taxable Income" v-model="item.range" class="form-control" >
                                     </div>
                                     <div class="col-md-3  mr-4 mt-3">
                                         <input type="text" placeholder="Rate" class="form-control" v-model="item.rate" >
                                     </div>
-                                    <label class=" col-md-3  mt-4 form-check form-switch" v-if="computational_fields.lastIndexOf(item) + 1  == computational_fields.length ">
-                                        <input class="form-check-input form-control" type="checkbox" :checked="item.isRest" v-model="item.isRest">
+                                    <label class="  mt-4 custom-control custom-checkbox" v-if="computational_fields.lastIndexOf(item) + 1  == computational_fields.length ">
+                                        <input  type="checkbox" class="form-control" :checked="item.isRest" v-model="item.isRest" @click="disableAddMore(item)">
                                         <span class="form-check-label">Rest Income</span>
                                     </label>
+                                    <label class="mt-4 custom-control custom-checkbox" v-if="index == 0 ">
+                                        <input  type="checkbox" class="form-control" :checked="item.untaxable" v-model="item.untaxable" @click="toggleTaxable(item)" >
+                                        <span class="form-check-label">Un Taxable Income</span>
+                                    </label>
                                     <div class="">
-                                        <button type="button" class=" mt-2 btn btn-icon btn-primary btn-danger"  @click="deleteValue(index)" ><i class="fe fe-trash"></i></button>
+                                        <button type="button" class=" mt-2 ml-4 btn btn-icon btn-primary btn-danger"  @click="deleteValue(index)" ><i class="fe fe-trash"></i></button>
                                     </div>
                                 </div>
-                                <button type="button" class="mt-4 btn btn-outline-primary" @click="addValue()"><i class="fe fe-plus mr-2"></i>More More Computations</button>
+                                <button type="button" id="add_more" class="mt-4 btn btn-outline-primary"  v-if="isHidden"  @click="addValue()"><i class="fe fe-plus mr-2"></i>Add More Computations</button>
 
                             </div>
                             <div class="form-group col-md-12" v-if="form_data.isPercentage">

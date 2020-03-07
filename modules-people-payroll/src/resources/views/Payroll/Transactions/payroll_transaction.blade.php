@@ -185,7 +185,6 @@
                                     break;
                                 case "one_time":
                                     self.end_time = false;
-
                                     break;
                             }
                             self.form_data =  {

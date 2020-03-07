@@ -143,7 +143,7 @@ class ModulesPeoplePayrollController extends Controller
         try {
             $resource = $sdk->createPayrollResource();
             $resource = $resource->addBodyParam('authority_name', $request->authority_name)
-                ->addBodyParam('payment_mode', $request->payment_type)
+                ->addBodyParam('payment_mode', $request->payment_mode)
                 ->addBodyParam('payment_details', json_encode($request->fields))
                 ->addBodyParam('default_payment_details', json_encode($request->default_fields));
             $response = $resource->send('put', ['authority',$id]);
@@ -647,7 +647,7 @@ class ModulesPeoplePayrollController extends Controller
             $resource = $resource->addBodyParam('remarks',$request->remarks)
                 ->addBodyParam('employee',$request->employee)
                 ->addBodyParam('status_type',$request->status)
-                ->addBodyParam('end_time',$request->end_date)
+                ->addBodyParam('end_time',$request->end_time)
                 ->addBodyParam('amount_type',$request->transaction_type)
                 ->addBodyParam('amount',$request->amount);
             $response = $resource->send('post',['transaction']);
@@ -755,7 +755,6 @@ class ModulesPeoplePayrollController extends Controller
             if (!$response->isSuccessful()) {
                 $message = $response->errors[0]['title'] ?? '';
                 throw new \RuntimeException('Failed while adding the Payroll Transaction ' . $message);
-
             }
             return response()->json(['message' => 'Payroll Transaction Updated Successfully'], 200);
 
@@ -776,5 +775,17 @@ class ModulesPeoplePayrollController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+    public function runIndex(){
+
+    }
+
+    public function singleRun(){
+
+    }
+
+    public function updateRun(){
+
     }
 }
