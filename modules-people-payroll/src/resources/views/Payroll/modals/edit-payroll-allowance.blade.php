@@ -25,7 +25,6 @@
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="allowance" >Authority ( Optional)  </label>
                                 <select  class="form-control custom-select selectized" tabindex="-1"  v-model="form_data.authority_id" >
-                                    <option selected :value="form_data.authority_id">@{{ form_data.authority_name }} </option>
                                     <option  :value="authority.id" v-for="authority in authorities">@{{ authority.name }}</option>
                                 </select>
 

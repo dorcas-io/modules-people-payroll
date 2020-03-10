@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dorcas-hub" />
+    <orderEntry type="module" module-name="dorcas-base" />
   </component>
 </module>

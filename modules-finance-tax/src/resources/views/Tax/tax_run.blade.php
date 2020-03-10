@@ -23,7 +23,7 @@
                                data-unique-id="id"
                                data-id-field="id"
                                data-row-attributes="processRows"
-                               data-url="{{ route('run-search') . '?' . http_build_query($args)  . '&id='. $element['id']}}"
+                               data-url="{{ route('run-search') . '?' . http_build_query($args)  . '&id='. $element[0]['id']}}"
                                data-page-list="[10,25,50,100,200,300,500]"
                                data-sort-class="sortable"
                                data-search-on-enter-key="true"
@@ -64,7 +64,7 @@
                 return {
                     form_data:{
                         run_name: null,
-                        selected_element:{!! json_encode($element['id']) !!}
+                        selected_element:{!! json_encode($element[0]['id']) !!}
                     }
                 }
             },
@@ -108,7 +108,7 @@
                     runs:[],
                     form_data:{
                     run_name: null,
-                    selected_element: {!! json_encode($element['id']) !!}
+                    selected_element: {!! json_encode($element[0]['id']) !!}
                 }
             }
             },

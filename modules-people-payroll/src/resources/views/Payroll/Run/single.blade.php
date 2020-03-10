@@ -12,7 +12,7 @@
     <div class="row">
 
         @include('layouts.blocks.tabler.sub-menu')
-        <div class="col-md-9 col-xl-9" id="paygroup_profile">
+        <div class="col-md-9 col-xl-9" id="run_profile">
             <div class="row">
                 <div class="col-md-4">
                     <div class="card card-profile">
@@ -35,11 +35,11 @@
                             <h3 class="card-title">Activity</h3>
                         </div>
                         <div class="card-body">
-                            Manage <strong>Employees</strong>, <strong>Allowances</strong>
+                            Manage <strong>Employees</strong>, <strong>Allowances</strong> ,
                             for this Paygroup:
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#employees">Employees</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#employees">Elements</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#allowances">Allowances </a>
@@ -50,33 +50,33 @@
                                     <br/>
                                     <div class="row mt-2" >
                                         <div class="container ">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table" id="paygroup-employees" >
-                                                    <thead>
-                                                    <tr>
-                                                        <th>id</th>
-                                                        <th>Name</th>
-                                                        <th>Job Title</th>
-                                                        <th>Staff Code</th>
-                                                    </tr>
-                                                    </thead>
-                                                 <tbody>
-                                             @foreach($paygroup_employees as $employee)
-                                                 <tr>
-                                                     <td>{{$employee['id']}}</td>
-                                                     <td>{{$employee['firstname'] . ' '. $employee['lastname']}}</td>
-                                                     <td>{{$employee['job_title']}}</td>
-                                                     <td>{{$employee['staff_code']}}</td>
-                                                 </tr>
-                                                 @endforeach
-                                                 </tbody>
-                                                </table>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table" id="paygroup-employees" >
+                                                        <thead>
+                                                        <tr>
+                                                            <th>id</th>
+                                                            <th>Name</th>
+                                                            <th>Job Title</th>
+                                                            <th>Staff Code</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($paygroup_employees as $employee)
+                                                            <tr>
+                                                                <td>{{$employee['id']}}</td>
+                                                                <td>{{$employee['firstname'] . ' '. $employee['lastname']}}</td>
+                                                                <td>{{$employee['job_title']}}</td>
+                                                                <td>{{$employee['staff_code']}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                         <div class="form-group ml-auto">
-                                                <a class="btn btn-primary btn-sm " href="#" v-on:click.prevent="showEmployees">Add Employees</a>
+                                            <a class="btn btn-primary btn-sm " href="#" v-on:click.prevent="showEmployees">Add Employees</a>
 
                                         </div>
                                         <div class="form-group mr-auto">
@@ -90,31 +90,31 @@
                                     <br/>
                                     <div class="row mt-2" >
                                         <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <table class="table" id="paygroup-allowances" >
-                                                    <thead>
-                                                    <tr>
-                                                        <th>id</th>
-                                                        <th>Name</th>
-                                                        <th> Allowance Type</th>
-{{--                                                        <th> Authority Name</th>--}}
-                                                    </tr>
-                                                    </thead>
-                                                 <tbody>
-                                                 @foreach($paygroup_allowances as $allowance)
-                                                     <tr>
-                                                         <td>{{$allowance['id']}}</td>
-                                                         <td>{{$allowance['name']}}</td>
-                                                         <td>{{$allowance['allowance_type']}}</td>
-{{--                                                         <td>{{$allowance->payrollAuthority}}</td>--}}
-                                                     </tr>
-                                                     @endforeach
-                                                 </tbody>
-                                                </table>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table" id="paygroup-allowances" >
+                                                        <thead>
+                                                        <tr>
+                                                            <th>id</th>
+                                                            <th>Name</th>
+                                                            <th> Allowance Type</th>
+                                                            {{--                                                        <th> Authority Name</th>--}}
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach($paygroup_allowances as $allowance)
+                                                            <tr>
+                                                                <td>{{$allowance['id']}}</td>
+                                                                <td>{{$allowance['name']}}</td>
+                                                                <td>{{$allowance['allowance_type']}}</td>
+                                                                {{--                                                         <td>{{$allowance->payrollAuthority}}</td>--}}
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                         <div class="form-group ml-auto">
                                             <a class="btn btn-primary btn-sm" href="#" v-on:click.prevent="showAllowances">Add Allowance</a>
 
@@ -204,7 +204,7 @@
                 addEmployees(values) {
                     const self = this;
                     values.forEach(function (value) {
-                     self.employees.push(value);
+                        self.employees.push(value);
                     })
                     console.log(this.employees);
                     axios.post('/mpe/payroll-employee-add/'+self.paygroup.id,{"employees":self.employees})
@@ -512,5 +512,104 @@
                 $('#example-console-form').text($(form).serialize());
             });
         });
+
+        let Payroll =  new Vue({
+            el: '#payroll_run',
+            data:{
+                form_data:{
+                    run_name:'',
+                }
+            },
+            methods:{
+                clickAction: function (event) {
+                    let target = event.target;
+                    if (!target.hasAttribute('data-action')) {
+                        target = target.parentNode.hasAttribute('data-action') ? target.parentNode : target;
+                    }
+
+                    let action = target.getAttribute('data-action');
+                    let name = target.getAttribute('data-name');
+                    let id = target.getAttribute('data-id');
+                    let index = parseInt(target.getAttribute('data-index'), 10);
+                    switch (action) {
+                        case 'view':
+                            return true;
+                        case 'delete_run':
+                            this.deleterun(id,index,name);
+                            break;
+                        case 'editrun':
+                            this.editrun(id,index,name);
+                            break;
+                    }
+
+                },
+                editrun(id)
+                {
+                    axios.get("/mpe/payroll-run/" + id)
+                        .then(function (response) {
+                            Payroll.form_data.run_name =response.data[0].name,
+                                Payroll.form_data.run_id = id
+                            $('#payroll-runs-edit-modal').modal('show')
+                        })
+                        .catch(function (error) {
+                            var message = '';
+                            console.log(error);
+                            swal.fire({
+                                title:"Error!",
+                                text:error.response.data,
+                                type:"error",
+                                showLoaderOnConfirm: true,
+                            });
+                        });
+                    console.log(Payroll.form_data)
+                },
+                setPayrollrun(){
+                    dropdown.viewPayrollrunModal()
+                },
+                deleterun(id,index,name){
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You are about to delete  " + name + " from this runs.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return axios.delete("/mpe/payroll-run/" + id)
+                                .then(function (response) {
+                                    $('#runs-table').bootstrapTable('removeByUniqueId', response.data.id);
+                                    return swal("Deleted!", "The run was successfully deleted.", "success");
+                                }).catch(function (error) {
+                                    var message = '';
+                                    console.log(error);
+                                    swal.fire({
+                                        title:"Error!",
+                                        text:error.response.data.message,
+                                        type:"error",
+                                        showLoaderOnConfirm: true,
+                                    });
+                                });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+
+
+                    });
+                },
+                deleteValue: function(index){
+                    this.computational_fields.splice(index, 1);
+                },
+                addValue: function() {
+                    this.computational_fields.push({range:'',rate:'',isRest:false});
+                    // this.$emit('input', this.fields);
+                },
+
+
+            },
+            mounted(){
+            }
+        })
     </script>
 @endsection
+
+

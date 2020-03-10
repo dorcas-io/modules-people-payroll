@@ -62,6 +62,18 @@
 
                 </div>
 
+                <div class="col-sm-4">
+                    @component('layouts.blocks.tabler.empty-fullpage')
+                        @slot('title')
+                            Payroll Run
+                        @endslot
+                        <a href="{{route('payroll-runs')}}" class="btn btn-primary">View </a>
+                        &nbsp;
+                        @slot('buttons')
+                        @endslot
+                    @endcomponent
+
+                </div>
 
             </div>
 

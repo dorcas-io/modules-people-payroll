@@ -41,17 +41,14 @@ Route::group(['namespace' => 'Dorcas\ModulesPeoplePayroll\Http\Controllers', 'mi
 
 
     Route::get('payroll-runs','ModulesPeoplePayrollController@runIndex')->name('payroll-runs');
+    Route::get('payroll-run-search','ModulesPeoplePayrollController@searchRun')->name('payroll-run-search');
+    Route::post('payroll-run','ModulesPeoplePayrollController@createRun')->name('payroll-run');
     Route::get('payroll-run/{id}','ModulesPeoplePayrollController@singleRun')->name('payroll-run');
     Route::put('payroll-run/{id}','ModulesPeoplePayrollController@updateRun')->name('payroll-run');
+    Route::delete('payroll-run/{id}','ModulesPeoplePayrollController@deleteRun')->name('payroll-run');
 
 
-//    Route::get('tax-authorities/{id}', 'ModulesFinanceTaxController@singleAuthority')->name('single_authority');
-//    Route::post('tax-authorities', 'ModulesFinanceTaxController@createAuthority')->name('create_authority');
-//    Route::put('tax-authorities/{id}', 'ModulesFinanceTaxController@updateAuthority')->name('update_authority');
-//    Route::delete('tax-authorities/{id}', 'ModulesFinanceTaxController@deleteAuthority')->name('delete_authority');
-//
-//    Route::get('tax-element-search', 'ModulesFinanceTaxController@searchElement')->name('element-search');
-//    Route::post('tax-elements', 'ModulesFinanceTaxController@addElement')->name('create_element');
+
 
 
 });

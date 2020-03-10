@@ -777,8 +777,132 @@ class ModulesPeoplePayrollController extends Controller
         }
     }
 
-    public function runIndex(){
+    private function getPayrollRuns(Sdk $sdk, string $id = null){
+        $sdk = $sdk ?: app(Sdk::class);
+        $company = auth()->user()->company(true, true);
+        # get the company
+//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
+//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//                ->send('get', ['allowance']);
+//            if (!$response->isSuccessful()) {
+//                return null;
+//            }
+//            return collect($response->getData())->map(function ($allowances) {
+//                return (object) $allowances;
+//            });
+//        });
+        $runs = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+            ->send('get', ['run']);
+        if (!$runs->isSuccessful()) {
+            return null;
+        }
+        return $runs;
+    }
 
+    public function runIndex(Request $request, Sdk $sdk){
+        try {
+            $this->data['page']['title'] .= ' &rsaquo; Payroll Run';
+            $this->data['header']['title'] = 'People Payroll Run';
+            $this->data['submenuAction'] = '';
+            $this->setViewUiResponse($request);
+            $this->data['args'] = $request->query->all();
+
+            $this->data['payroll_runs'] = $this->getPayrollRuns($sdk)->getData(true);
+            $this->data['employees'] = $this->getEmployees($sdk);
+            $this->data['paygroups'] = $this->getPayrollPaygroups($sdk);
+//            $this->data['paygroups'] = $this->getPayrollPaygroups($sdk);
+//            $this->data['employees'] = $this->getEmployees($sdk);
+            switch ($this->data){
+                case !empty($this->data['payroll_runs']):
+                    $this->data['submenuAction'] .= '
+                    <div class="dropdown"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Actions</button>
+                            <div class="dropdown-menu">
+                          <a href="#" data-toggle="modal" data-target="#payroll-run-add-modal" class="dropdown-item">Add Payroll Run</a>
+                          </div>
+                          </div>';
+
+            }
+            return view('modules-people-payroll::Payroll/Run/payroll_run', $this->data);
+
+        }
+        catch (\Exception $e){
+            $this->setViewUiResponse($request);
+            return view('modules-people-payroll::Payroll/Run/payroll_run', $this->data);
+
+        }
+    }
+
+    public function searchRun(Request $request, Sdk $sdk){
+        $search = $request->query('search', '');
+        $offset = (int) $request->query('offset', 0);
+        $limit = (int) $request->query('limit', 10);
+
+        # get the request parameters
+        $path = ['run'];
+
+        $query = $sdk->createPayrollResource();
+        $query = $query->addQueryArgument('limit', $limit)
+            ->addQueryArgument('page', get_page_number($offset, $limit));
+        if (!empty($search)) {
+            $query = $query->addQueryArgument('search', $search);
+        }
+        $response = $query->send('get', $path);
+        # make the request
+        if (!$response->isSuccessful()) {
+            // do something here
+            throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find any matching payroll run.');
+        }
+        $this->data['total'] = $response->meta['pagination']['total'] ?? 0;
+        # set the total
+        $this->data['rows'] = $response->data;
+        # set the data
+        return response()->json($this->data);
+    }
+
+    public function createRun(Request $request, Sdk $sdk){
+        try{
+        $final_employees = array();
+        $paygroups = $request->paygroups;
+        $employees = $request->employees;
+            for($i = 0, $iMax = count($paygroups); $i < $iMax; $i++){
+                if ($paygroups[$i] !== '') {
+                    $paygroup_employees = $this->getPaygroupEmployees($sdk,$paygroups[$i])->getData(true);
+                    foreach ($paygroup_employees as $employee){
+                        $final_employees[] = $employee;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            for($i = 0, $iMax = count($employees); $i < $iMax; $i++){
+                if ($employees[$i] !== '') {
+                    $final_employees[] = $employees[$i];
+                }
+                else{
+                    break;
+                }
+            }
+
+        return $final_employees;
+
+//        $resource = $sdk->createPayrollResource();
+//        $resource = $resource->addBodyParam('title',$request->title)
+//            ->addBodyParam('run',$request->title)
+//            ->addBodyParam('status',$request->status)
+//            ->addBodyParam('employees',$employees);
+//        $response = $resource->send('post',['run']);
+//        if (!$response->isSuccessful()) {
+//            $message = $response->errors[0]['title'] ?? '';
+//            throw new \RuntimeException('Failed while adding the Payroll Run '.$message);
+//
+//        }
+        return response()->json(['message'=>'Payroll Run Created Successfully'],200);
+
+    }
+    catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],400);
+        }
     }
 
     public function singleRun(){
@@ -788,4 +912,19 @@ class ModulesPeoplePayrollController extends Controller
     public function updateRun(){
 
     }
+
+    public function deleteRun(Request $request, Sdk $sdk, string $id) {
+            try{
+                $resource = $sdk->createPayrollResource();
+                $response = $resource->send('delete', ['run',$id]);
+                if (!$response->isSuccessful()) {
+                    throw new \RuntimeException($response->errors[0]['title'] ?? 'Failed while deleting the Run.');
+                }
+                $this->data = $response->getData();
+                return response()->json($this->data);
+            } catch (\Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 400);
+            }
+        }
+
 }
