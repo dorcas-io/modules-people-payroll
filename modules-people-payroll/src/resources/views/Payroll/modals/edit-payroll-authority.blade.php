@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" @submit.prevent="updateAuthority()"  id="payroll_authority_edit" method="post">
+                <form action="" @submit.prevent="updateAuthority()"  id="payroll_authority_edit" method="put">
                     <fieldset>
                         <div class="row">
                             <div class="form-group col-md-12">

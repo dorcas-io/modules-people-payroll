@@ -2,19 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1a453e6-21d6-41fb-930b-26a8abd030e0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../dorcas-hub/.idea/dorcas-hub.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../dorcas-hub/public/vendors/Datatable/data-tables.checkbox.min.css" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../dorcas-hub/public/vendors/Datatable/data-tables.checkbox.min.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../dorcas-hub/public/vendors/Datatable/data-tables.min.css" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../dorcas-hub/public/vendors/Datatable/data-tables.min.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../dorcas-hub/public/vendors/data-tables/data-vanilla.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Run/payroll_run.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Run/single.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/add-payroll-run.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-run.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sdk-php-laravel/.idea/sdk-php-laravel.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-base/app/Http/Controllers/Payroll/Run.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-base/app/Http/Controllers/Payroll/Run.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dorcas-base/app/Jobs/People/PeoplePayrollRun.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-base/app/Jobs/People/PeoplePayrollRun.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dorcas-base/app/Models/Company.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-base/app/Models/Company.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dorcas-base/app/Transformers/PayrollRunTransformer.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-base/app/Transformers/PayrollRunTransformer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-base/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-base/routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-hub/app/Dorcas/Support/Tabler/TablerNotification.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/app/Dorcas/Support/Tabler/TablerNotification.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-hub/app/Dorcas/Support/helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/app/Dorcas/Support/helpers.php" afterDir="false" />
@@ -44,16 +39,14 @@
       <change beforePath="$PROJECT_DIR$/../dorcas-hub/resources/views/layouts/blocks/tabler/header-dashboard-switch.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/resources/views/layouts/blocks/tabler/header-dashboard-switch.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-hub/resources/views/layouts/tabler.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/resources/views/layouts/tabler.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../dorcas-hub/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/../dorcas-hub/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dorcas-modules.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dorcas-modules.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules-finance-tax/src/resources/views/Tax/tax_run.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-finance-tax/src/resources/views/Tax/tax_run.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/Http/Controllers/ModulesPeoplePayrollController.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/Http/Controllers/ModulesPeoplePayrollController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Paygroup/single.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Paygroup/single.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Run/payroll_run.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Run/payroll_run.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/Run/single.blade.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/add-payroll-run.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/add-payroll-run.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-allowance.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-allowance.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-authority.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-authority.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-run.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules-people-payroll/src/resources/views/Payroll/modals/edit-payroll-run.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk-php-laravel" beforeDir="false" afterPath="$PROJECT_DIR$/sdk-php-laravel" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk-php-laravel/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/sdk-php-laravel/composer.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sdk-php-laravel/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/sdk-php-laravel/manifest.json" afterDir="false" />
@@ -87,6 +80,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -118,7 +112,7 @@
       <updated>1580817992835</updated>
       <workItem from="1580817994294" duration="20298000" />
       <workItem from="1580941145303" duration="21843000" />
-      <workItem from="1583754071423" duration="19917000" />
+      <workItem from="1583754071423" duration="28568000" />
     </task>
     <servers />
   </component>
@@ -130,6 +124,18 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="424" y="249" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1583764066216" />
+    <state x="308" y="191" key="IDE.errors.dialog" timestamp="1583835988213">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="308" y="191" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1583835988213" />
+    <state x="221" y="89" key="SettingsEditor" timestamp="1583837444040">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="221" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1583837444040" />
+    <state x="100" y="100" width="1240" height="700" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1583835387209">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="100" y="100" width="1240" height="700" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1440.900@0.0.1440.900" timestamp="1583835387209" />
     <state x="380" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1580941201697">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -138,10 +144,14 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="368" y="191" width="728" height="518" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1581077863547" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1583761563122">
+    <state x="484" y="320" width="552" height="281" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1583837442087">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1583761563122" />
+    <state x="484" y="320" width="552" height="281" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1440.900@0.0.1440.900" timestamp="1583837442087" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1583838812826">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1583838812826" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.23.1440.806@0.23.1440.806" timestamp="1580985396328" />
   </component>
   <component name="XDebuggerManager">

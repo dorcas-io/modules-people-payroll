@@ -868,7 +868,7 @@ class ModulesPeoplePayrollController extends Controller
                 if ($paygroups[$i] !== '') {
                     $paygroup_employees = $this->getPaygroupEmployees($sdk,$paygroups[$i])->getData(true);
                     foreach ($paygroup_employees as $employee){
-                        $final_employees[] = $employee;
+                        $final_employees[] = $employee['id'];
                     }
                 }
                 else{
@@ -884,19 +884,17 @@ class ModulesPeoplePayrollController extends Controller
                 }
             }
 
-        return $final_employees;
+        $resource = $sdk->createPayrollResource();
+        $resource = $resource->addBodyParam('title',$request->title)
+            ->addBodyParam('run',$request->run)
+            ->addBodyParam('status',$request->status)
+            ->addBodyParam('employees',$final_employees);
+        $response = $resource->send('post',['run']);
+        if (!$response->isSuccessful()) {
+            $message = $response->errors[0]['title'] ?? '';
+            throw new \RuntimeException('Failed while adding the Payroll Run '.$message);
 
-//        $resource = $sdk->createPayrollResource();
-//        $resource = $resource->addBodyParam('title',$request->title)
-//            ->addBodyParam('run',$request->title)
-//            ->addBodyParam('status',$request->status)
-//            ->addBodyParam('employees',$employees);
-//        $response = $resource->send('post',['run']);
-//        if (!$response->isSuccessful()) {
-//            $message = $response->errors[0]['title'] ?? '';
-//            throw new \RuntimeException('Failed while adding the Payroll Run '.$message);
-//
-//        }
+        }
         return response()->json(['message'=>'Payroll Run Created Successfully'],200);
 
     }
@@ -905,8 +903,19 @@ class ModulesPeoplePayrollController extends Controller
         }
     }
 
-    public function singleRun(){
+    public function singleRun(Request $request, Sdk $sdk , string  $id){
+        try {
+            $response = $sdk->createPayrollResource()->send('get',['run',$id]);
+            if(!$response->isSuccessful()){
+                throw new RecordNotFoundException($response->errors[0]['title'] ?? 'Could not find the Payroll Run');
+            }
+            $transaction = $response->getData(true);
+            return response()->json([$transaction, 200]);
+        }
+        catch (\Exception $e){
+            return response()->json(['message' => $e->getMessage()], 400);
 
+        }
     }
 
     public function updateRun(){

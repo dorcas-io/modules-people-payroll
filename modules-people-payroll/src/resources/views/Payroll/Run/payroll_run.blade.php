@@ -58,6 +58,7 @@
                             @endcomponent
                         </div>
                     @endif
+                        @include('modules-people-payroll::Payroll.modals.edit-payroll-run')
 
                 </div>
 
@@ -117,7 +118,6 @@
                     }
 
                     $('#submit-run').addClass('btn-loading btn-icon')
-                    this.form_data.employees.push(employees)
                     axios.post('/mpe/payroll-run',this.form_data)
                         .then(response=>{
                             $('#submit-run').removeClass('btn-loading btn-icon')
@@ -221,13 +221,175 @@
             },
 
         });
+        let Payroll =  new Vue({
+            el: '#payroll_run',
+            data:{
+                table1 : null,
+                table2 : null,
+                currentStep:1,
+                employees:null,
+                form_data:{
+                    title:'',
+                    run:'',
+                    status:'',
+                    employees:[],
+                    paygroups:[],
+
+                }
+            },
+            methods:{
+                clickAction: function (event) {
+                    let target = event.target;
+                    if (!target.hasAttribute('data-action')) {
+                        target = target.parentNode.hasAttribute('data-action') ? target.parentNode : target;
+                    }
+
+                    let action = target.getAttribute('data-action');
+                    let name = target.getAttribute('data-name');
+                    let id = target.getAttribute('data-id');
+                    let index = parseInt(target.getAttribute('data-index'), 10);
+                    switch (action) {
+                        case 'view':
+                            return true;
+                        case 'delete_run':
+                            this.deleteRun(id,index,name);
+                            break;
+                        case 'editRun':
+                            this.editRun(id,index,name);
+                            break;
+                    }
+
+                },
+                goToStep(step){
+                    this.currentStep = step;
+                    if(step === 2){
+                        $('#edit-tables').css(
+                            'display','block'
+                        )
+                    }
+                    else{
+                        $('#edit-tables').css(
+                            'display','none'
+                        )
+                    }
+                },
+                previousStep(step){
+                    this.currentStep = step;
+                },
+                editRun(id)
+                {
+                    const self = this;
+                    axios.get("/mpe/payroll-run/" + id)
+                        .then(function (response) {
+                           const {title,run,status,employees} = response.data[0];
+                           self.form_data.run = run;
+                           self.form_data.title = title;
+                           self.form_data.status = status;
+                           self.employees = employees.data;
+                           console.log(employees);
+                            self.employees.forEach(employee =>{
+                                self.table1.row.add([
+                                    employee.id,
+                                    employee.firstname,
+                                    employee.job_title,
+                                    employee.staff_code
+                                ]).draw(false)
+                            });
+                            $('#payroll-run-edit-modal').modal('show')
+                        })
+                        .catch(function (error) {
+                            let message = '';
+                            console.log(error);
+                            swal.fire({
+                                title:"Error!",
+                                text:error.response.data,
+                                type:"error",
+                                showLoaderOnConfirm: true,
+                            });
+                        });
+                    console.log(Payroll.form_data)
+                },
+                setPayrollrun(){
+                    dropdown.viewPayrollrunModal()
+                },
+                deleteRun(id,index,name){
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You are about to delete  " + name + " from this runs.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                            return axios.delete("/mpe/payroll-run/" + id)
+                                .then(function (response) {
+                                    $('#runs-table').bootstrapTable('removeByUniqueId', response.data.id);
+                                    return swal("Deleted!", "The run was successfully deleted.", "success");
+                                }).catch(function (error) {
+                                    let  message = '';
+                                    console.log(error);
+                                    swal.fire({
+                                        title:"Error!",
+                                        text:error.response.data.message,
+                                        type:"error",
+                                        showLoaderOnConfirm: true,
+                                    });
+                                });
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
 
 
+                    });
+                },
+                deleteValue: function(index){
+                    this.computational_fields.splice(index, 1);
+                },
+                addValue: function() {
+                    this.computational_fields.push({range:'',rate:'',isRest:false});
+                    // this.$emit('input', this.fields);
+                },
+
+
+            },
+            mounted() {
+                this.table1 = $('#run_edit_employees').DataTable({
+                    // 'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
+                    'columnDefs': [
+                        {
+                            'targets': 0,
+                            'checkboxes': {
+                                'selectRow': true
+                            }
+                        }
+                    ],
+                    'select': {
+                        'style': 'multi'
+                    },
+                    'order': [[1, 'asc']]
+                });
+                this.table2 = $('#run_edit_paygroups').DataTable({
+                    // 'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
+                    'columnDefs': [
+                        {
+                            'targets': 0,
+                            'checkboxes': {
+                                'selectRow': true
+                            }
+                        }
+                    ],
+                    'select': {
+                        'style': 'multi'
+                    },
+                    'order': [[1, 'asc']]
+                });
+            }
+        })
 
         function processRows(row, index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             row.buttons =
-                '<a class="btn btn-sm btn-cyan text-white" href="/mpe/payroll-run/' + row.id + '">Update</a> &nbsp; ' +
+                '<a class="btn btn-sm btn-cyan text-white" data-index="' + index + '"  data-action="editRun" data-id="' + row.id + '" data-name="' + row.title + '">Update</a> &nbsp; ' +
                 '<a class="btn btn-sm btn-danger text-white"   data-index="' + index + '" data-action="delete_run" data-id="' + row.id + '" data-name="' + row.title + '">Delete</a>'
             // row.account_link = '<a href="/mfn/finance-entries?account=' + row.account.data.id + '">' + row.account.data.display_name + '</a>';
             // row.created_at = moment(row.created_at).format('DD MMM, YYYY');

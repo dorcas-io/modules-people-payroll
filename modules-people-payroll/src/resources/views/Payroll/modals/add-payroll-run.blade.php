@@ -21,7 +21,6 @@
                                 <label class="form-label" for="run">Run Status</label>
                                 <select class="select-dropdown form-control" v-model="form_data.status">
                                     <option value="draft">Draft</option>
-                                    <option value="approved">Approved</option>
                                 </select>
                             </div>
                             <button  class="btn btn-primary float-right " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
