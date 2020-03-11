@@ -918,8 +918,48 @@ class ModulesPeoplePayrollController extends Controller
         }
     }
 
-    public function updateRun(){
+    public function updateRun(Request $request, Sdk $sdk, string $id){
+        try{
+            $final_employees = array();
+            $paygroups = $request->paygroups;
+            $employees = $request->employees;
+            for($i = 0, $iMax = count($paygroups); $i < $iMax; $i++){
+                if ($paygroups[$i] !== '') {
+                    $paygroup_employees = $this->getPaygroupEmployees($sdk,$paygroups[$i])->getData(true);
+                    foreach ($paygroup_employees as $employee){
+                        $final_employees[] = $employee['id'];
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            for($i = 0, $iMax = count($employees); $i < $iMax; $i++){
+                if ($employees[$i] !== '') {
+                    $final_employees[] = $employees[$i];
+                }
+                else{
+                    break;
+                }
+            }
 
+            $resource = $sdk->createPayrollResource();
+            $resource = $resource->addBodyParam('title',$request->title)
+                ->addBodyParam('run',$request->run)
+                ->addBodyParam('status',$request->status)
+                ->addBodyParam('employees',$final_employees);
+            $response = $resource->send('put',['run',$id]);
+            if (!$response->isSuccessful()) {
+                $message = $response->errors[0]['title'] ?? '';
+                throw new \RuntimeException('Failed while updating the Payroll Run '.$message);
+
+            }
+            return response()->json(['message'=>'Payroll Run Updated Successfully'],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json(['message'=>$e->getMessage()],400);
+        }
     }
 
     public function deleteRun(Request $request, Sdk $sdk, string $id) {

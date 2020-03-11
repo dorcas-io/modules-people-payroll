@@ -21,6 +21,7 @@
                                 <label class="form-label" for="run">Run Status</label>
                                 <select class="select-dropdown form-control" v-model="form_data.status">
                                     <option value="draft">Draft</option>
+                                    <option value="approved">Approved</option>
                                 </select>
                             </div>
                             <button  class="btn btn-primary float-right " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
@@ -91,15 +92,8 @@
                                                                     </thead>
                                                                     <tbody >
                                                                     <tbody >
-{{--                                                                    @foreach($employees as $employee)--}}
-{{--                                                                        <tr>--}}
-{{--                                                                            <td>{{$employee->id}}</td>--}}
-{{--                                                                            <td>{{$employee->firstname}}</td>--}}
-{{--                                                                            <td>{{$employee->job_title}}</td>--}}
-{{--                                                                            <td>{{$employee->staff_code}}</td>--}}
-{{--                                                                        </tr>--}}
-{{--                                                                    @endforeach--}}
                                                                     </tbody>
+
                                                                 </table>
                                                             </div>
                                                         </div>
@@ -120,7 +114,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit"  name="action" id="edit-run" form="payroll_run_add" class="btn btn-primary" v-if="currentStep==2">Submit</button>
+                <button type="submit"  name="action" id="edit-run" form="payroll_run_edit" class="btn btn-primary" v-if="currentStep==2">Submit</button>
             </div>
         </div>
     </div>

@@ -171,6 +171,7 @@
                         // Output form data to a console
                 }
             },
+
             mounted() {
                 this.table1 = $('#run_employees').DataTable({
                     // 'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
@@ -234,6 +235,7 @@
                     status:'',
                     employees:[],
                     paygroups:[],
+                    run_id:null,
 
                 }
             },
@@ -281,11 +283,12 @@
                     const self = this;
                     axios.get("/mpe/payroll-run/" + id)
                         .then(function (response) {
-                           const {title,run,status,employees} = response.data[0];
+                           const {title,run,status,employees,id} = response.data[0];
                            self.form_data.run = run;
                            self.form_data.title = title;
                            self.form_data.status = status;
                            self.employees = employees.data;
+                           self.form_data.run_id = id;
                            console.log(employees);
                             self.employees.forEach(employee =>{
                                 self.table1.row.add([
@@ -295,6 +298,7 @@
                                     employee.staff_code
                                 ]).draw(false)
                             });
+                            self.table1.columns().checkboxes.select(true)
                             $('#payroll-run-edit-modal').modal('show')
                         })
                         .catch(function (error) {
@@ -342,16 +346,67 @@
 
                     });
                 },
-                deleteValue: function(index){
-                    this.computational_fields.splice(index, 1);
-                },
-                addValue: function() {
-                    this.computational_fields.push({range:'',rate:'',isRest:false});
-                    // this.$emit('input', this.fields);
-                },
+                updateRun() {
 
+                    $('#edit-run').addClass('btn-loading btn-icon')
+                    let employee_rows_selected = this.table1.column(0).checkboxes.selected();
+                    let paygroup_rows_selected = this.table2.column(0).checkboxes.selected();
+                    let paygroups = paygroup_rows_selected.join(",").split(",");
+                    let employees = employee_rows_selected.join(",").split(",");
+                    // Iterate over all selected checkboxes
+                    // $('#example-console-rows').text();
+                    this.updateForm(paygroups,employees);
+                    // Output form data to a console
+                },
+                updateForm: function (paygroups,employees) {
+                    const self = this;
+                    for(let i = 0; i < paygroups.length; i++){
+                        if (paygroups[i] !== "") {
+                            self.form_data.paygroups.push(paygroups[i])
+                        }
+                        else{
+                            break;
+                        }
+                    }
 
+                    for(let i = 0; i < employees.length; i++){
+                        if (employees[i] !== "") {
+                            self.form_data.employees.push(employees[i])
+                        }
+                        else{
+                            break;
+                        }
+                    }
+
+                    $('#submit-run').addClass('btn-loading btn-icon')
+                    axios.put('/mpe/payroll-run/'+this.form_data.run_id,this.form_data)
+                        .then(response=>{
+                            $('#edit-run').removeClass('btn-loading btn-icon')
+
+                            this.form_data = {};
+                            dropdown.hidePayrollrunModal();
+                            swal({
+                                title:"Success!",
+                                text:"Payroll run Successfully Updated",
+                                type:"success",
+                                showLoaderOnConfirm: true,
+                            }).then(function () {
+                                location.reload()
+                            });
+                        })
+                        .catch(e=>{
+                            console.log(e.response.data);
+                            $('#submit-run').removeClass('btn-loading btn-icon')
+                            swal.fire({
+                                title:"Error!",
+                                text:e.response.data.message,
+                                type:"error",
+                                showLoaderOnConfirm: true,
+                            });
+                        })
+                },
             },
+
             mounted() {
                 this.table1 = $('#run_edit_employees').DataTable({
                     // 'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
@@ -359,8 +414,8 @@
                         {
                             'targets': 0,
                             'checkboxes': {
-                                'selectRow': true
-                            }
+                                'selectRow': true,
+                            },
                         }
                     ],
                     'select': {
@@ -383,6 +438,8 @@
                     },
                     'order': [[1, 'asc']]
                 });
+                // this.table1.rows({selected:true})
+
             }
         })
 
