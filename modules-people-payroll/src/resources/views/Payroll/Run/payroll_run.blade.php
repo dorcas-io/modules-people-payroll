@@ -1,8 +1,8 @@
 @extends('layouts.tabler')
 @section('head_css')
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{cdn('vendors/Datatable/data-tables.min.css')}}"rel="stylesheet" type="text/css" />
-    <link href="{{cdn('vendors/Datatable/data-tables.checkbox.min.css')}}"rel="stylesheet" type="text/css" />
+    <link href="{{cdn('vendors/Datatable/data-tables.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{cdn('vendors/Datatable/data-tables.checkbox.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 @section('body_content_header_extras')
 
@@ -39,7 +39,7 @@
                                 <tr>
                                     <th data-field="title">Run Title</th>
                                     <th data-field="run">Run Name</th>
-                                    <th data-field="status">Status</th>
+                                    <th  data-field="status">Status</th>
                                     <th data-field="buttons">Actions</th>
                                 </tr>
                                 </thead>
@@ -64,6 +64,8 @@
 
                 @include('modules-people-payroll::Payroll.modals.add-payroll-run')
 
+                @include('modules-people-payroll::Payroll.modals.payroll-run-invoice')
+
 
             </div>
 
@@ -75,6 +77,7 @@
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="{{cdn('vendors/Datatable/data-tables.min.js')}}"></script>
     <script src="{{cdn('vendors/Datatable/data-tables.checkbox.min.js')}}"></script>
+    <script src="{{cdn('vendors/Datatable/data-tables.bootstrap.min.js')}}"></script>
     <script>
         app.currentUser = {!! json_encode($dorcasUser) !!};
         const table = $('.bootstrap-table');
@@ -259,6 +262,9 @@
                         case 'editRun':
                             this.editRun(id,index,name);
                             break;
+                        case 'view_invoice':
+                            this.Invoice(id,index,name);
+                            break;
                     }
 
                 },
@@ -350,15 +356,17 @@
 
                     $('#edit-run').addClass('btn-loading btn-icon')
                     let employee_rows_selected = this.table1.column(0).checkboxes.selected();
+                    let employee_more_rows_selected = this.table3.column(0).checkboxes.selected();
                     let paygroup_rows_selected = this.table2.column(0).checkboxes.selected();
                     let paygroups = paygroup_rows_selected.join(",").split(",");
                     let employees = employee_rows_selected.join(",").split(",");
+                    let more_employees = employee_more_rows_selected.join(",").split(",");
                     // Iterate over all selected checkboxes
                     // $('#example-console-rows').text();
-                    this.updateForm(paygroups,employees);
+                    this.updateForm(paygroups,employees,more_employees);
                     // Output form data to a console
                 },
-                updateForm: function (paygroups,employees) {
+                updateForm: function (paygroups,employees,more_employees) {
                     const self = this;
                     for(let i = 0; i < paygroups.length; i++){
                         if (paygroups[i] !== "") {
@@ -372,6 +380,14 @@
                     for(let i = 0; i < employees.length; i++){
                         if (employees[i] !== "") {
                             self.form_data.employees.push(employees[i])
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    for(let i = 0; i < more_employees.length; i++){
+                        if (more_employees[i] !== "") {
+                            self.form_data.employees.push(more_employees[i])
                         }
                         else{
                             break;
@@ -438,6 +454,21 @@
                     },
                     'order': [[1, 'asc']]
                 });
+                this.table3 = $('#run_edit_more_employees').DataTable({
+                    // 'ajax': '/lab/jquery-datatables-checkboxes/ids-arrays.txt',
+                    'columnDefs': [
+                        {
+                            'targets': 0,
+                            'checkboxes': {
+                                'selectRow': true
+                            }
+                        }
+                    ],
+                    'select': {
+                        'style': 'multi'
+                    },
+                    'order': [[1, 'asc']]
+                });
                 // this.table1.rows({selected:true})
 
             }
@@ -445,9 +476,23 @@
 
         function processRows(row, index) {
             row.created_at = moment(row.created_at).format('DD MMM, YYYY');
-            row.buttons =
-                '<a class="btn btn-sm btn-cyan text-white" data-index="' + index + '"  data-action="editRun" data-id="' + row.id + '" data-name="' + row.title + '">Update</a> &nbsp; ' +
-                '<a class="btn btn-sm btn-danger text-white"   data-index="' + index + '" data-action="delete_run" data-id="' + row.id + '" data-name="' + row.title + '">Delete</a>'
+            if(row.status === 'processed'){
+                row.status = '<span class="badge badge-success">'+row.status+'</span>';
+                row.buttons =
+                    '<a class="btn btn-sm btn-primary text-white"  href="/run/employees/' + row.id + '">View  Payroll Employees</a>'
+            }
+            else{
+                row.buttons =
+                    '<a class="btn btn-sm btn-cyan text-white" data-index="' + index + '"  data-action="editRun" data-id="' + row.id + '" data-name="' + row.title + '">Update</a> &nbsp; ' +
+                    '<a class="btn btn-sm btn-danger text-white"   data-index="' + index + '" data-action="delete_run" data-id="' + row.id + '" data-name="' + row.title + '">Delete</a>' ;
+            }
+            if(row.status === 'draft'){
+                row.status = '<span class="badge badge-warning">'+row.status+'</span>';
+            }
+            if(row.status === 'approved'){
+                row.status = '<span class="badge badge-primary">'+row.status+'</span>';
+            }
+
             // row.account_link = '<a href="/mfn/finance-entries?account=' + row.account.data.id + '">' + row.account.data.display_name + '</a>';
             // row.created_at = moment(row.created_at).format('DD MMM, YYYY');
             // row.buttons = '<a class="btn btn-danger btn-sm remove" data-action="remove" href="#" data-id="'+row.id+'">Delete</a>';

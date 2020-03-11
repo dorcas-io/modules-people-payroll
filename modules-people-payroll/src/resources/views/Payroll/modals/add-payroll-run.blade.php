@@ -15,7 +15,7 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Run</label>
-                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Payroll Run Name" type="text" required>
+                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Payroll Run eg(February Run)" type="text" required>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Run Status</label>

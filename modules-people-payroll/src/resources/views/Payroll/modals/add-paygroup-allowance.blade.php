@@ -11,7 +11,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <table id="allowance-table" class="display" cellspacing="0" width="100%">
+                                <table id="allowance-table" class="table" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th> id </th>

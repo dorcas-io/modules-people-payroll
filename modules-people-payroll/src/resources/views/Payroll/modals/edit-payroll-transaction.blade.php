@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Update  Payroll transaction</h5>
+                <h5 class="modal-title">Update  Payroll Run</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -15,11 +15,10 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="transaction">Employees</label>
-                                <select   class="form-control custom-select selectized" tabindex="-1" v-model="form_data.selected_employee" required >
-                                    <option selected :value="form_data.employee.id" > @{{ form_data.employee.firstname + form_data.employee.lastname  }} </option>
-                                    <option :value="employee.id" v-for="employee in employees">@{{ employee.firstname + employee.lastname }}</option>
+                                <select   class="form-control custom-select "  v-model="form_data.selected_employee" required >
+                                    <option  value="form_data.employee.id" > @{{ form_data.employee.firstname  }} </option>
+                                    <option :value="employee.id" v-for="(employee,index) in employees" :key="index">@{{ employee.firstname + employee.lastname }}</option>
                                 </select>
-
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="transaction" >Transaction Status  </label>

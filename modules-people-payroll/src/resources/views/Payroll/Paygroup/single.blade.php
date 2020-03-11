@@ -143,6 +143,7 @@
     <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
     <script src="{{cdn('vendors/Datatable/data-tables.min.js')}}"></script>
     <script src="{{cdn('vendors/Datatable/data-tables.checkbox.min.js')}}"></script>
+    <script src="{{cdn('vendors/Datatable/data-tables.bootstrap.min.js')}}"></script>
     <script type="text/javascript">
         const max_day = 28;
         const min_day = 1;
@@ -491,11 +492,10 @@
                 $('#example-console-form').text($(form).serialize());
             });
             $('#delete-allowances').on('click', function(e){
-                $('#delete-employees').addClass('btn-loading btn-icon')
+                $('#delete-allowances').addClass('btn-loading btn-icon')
                 var form = this;
-
                 var rows_selected = table3.column(0).checkboxes.selected();
-                var rows = []
+                var rows = [];
                 // Iterate over all selected checkboxes
                 $.each(rows_selected, function(index, rowId){
                     // Create a hidden element

@@ -148,7 +148,7 @@
                 end_time: false,
                 form_data:{
                     employee:  {},
-                    "selected_employee" :undefined
+                    selected_employee : ''
                 }
             },
             methods:{
@@ -194,7 +194,7 @@
                                 "amount" : amount,
                                 "end_time" :end_time,
                                 "remarks" :remarks,
-                                "employee" :employee.data,
+                                "employee" :employee.data[0],
 
                             }
                             console.log(self.form_data)

@@ -35,14 +35,17 @@
                                         <h3 class="card-title">Activity</h3>
                                     </div>
                                     <div class="card-body">
-                                        Add <strong>Paygroups</strong>, <strong>Employees</strong> ,
+                                        Add  More Employees for this run  ,
                                         for this Run:
                                         <ul class="nav nav-tabs nav-justified">
                                             <li class="nav-item">
                                                 <a class="nav-link active" data-toggle="tab" href="#edit-paygroups">Paygroups </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link " data-toggle="tab" href="#edit-employees">Employees</a>
+                                                <a class="nav-link " data-toggle="tab" href="#edit-more-employees">Add More Employees</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link " data-toggle="tab" href="#edit-employees">Run Employees</a>
                                             </li>
 
                                         </ul>
@@ -65,6 +68,38 @@
                                                                         <tr>
                                                                             <td>{{$paygroup->id}}</td>
                                                                             <td>{{$paygroup->name}}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                &nbsp;
+                                            </div>
+                                            <div class="tab-pane container  o-auto" id="edit-more-employees">
+                                                <br/>
+                                                <div class="row mt-2" >
+                                                    <div class="container ">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <table class="table" id="run_edit_more_employees" >
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>id</th>
+                                                                        <th>Name</th>
+                                                                        <th>Job Title</th>
+                                                                        <th>Staff Code</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    @foreach($employees as $employee)
+                                                                        <tr>
+                                                                            <td>{{$employee->id}}</td>
+                                                                            <td>{{$employee->firstname}}</td>
+                                                                            <td>{{$employee->job_title}}</td>
+                                                                            <td>{{$employee->staff_code}}</td>
                                                                         </tr>
                                                                     @endforeach
                                                                     </tbody>
