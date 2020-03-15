@@ -14,7 +14,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" for="authority">Authority</label>
-                            <input class="form-control" id="authority" :value="authority.name"  type="text" disabled>
+                            <input class="form-control" id="authority" :value="authority.name"  type="text" readonly>
                         </div>
                         <div class="form-group col-md-12">
                             <label class="form-label" >Frequency</label>
@@ -24,11 +24,11 @@
                                 <option value="monthly">Monthly</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-4 " v-if="elements_form.isYearly">
+                        <div class="form-group col-md-4 " v-show="elements_form.isYearly">
                             <label class="form-label" >Add Run  Month and Date </label>
                             <input  type="date"  class="form-control" v-model="elements_form.frequency_year" >
                         </div>
-                        <div class="form-group col-md-12" v-if="elements_form.isMonthly">
+                        <div class="form-group col-md-12" v-show="elements_form.isMonthly">
                             <label class="form-label" for="element_type">Add Tax Run Day </label>
                             <input  type="number" class="col-md-4 form-control mr-4 mt-3" v-on:keyup="validateDay($event)"  v-model="elements_form.frequency_month " placeholder="Add Tax Run Day eg (21)" required>
                         </div>
@@ -39,7 +39,7 @@
                                 <option value="percentage">Percentage</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-12" v-if="elements_form.isPercent">
+                        <div class="form-group col-md-12" v-show="elements_form.isPercent">
                             <label class="form-label" for="element_type">Add Tax Percentage Value </label>
                             <input type="hidden"   v-model="elements_form.type_data.element_type = 'Percentage'"  />
                             <input type="number"  class=" col-md-4 form-control mr-4 mt-3"  v-model="elements_form.type_data.value " placeholder="Add Value eg (5) " required/>

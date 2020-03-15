@@ -149,7 +149,22 @@
                 "single_element":{},
                 "showModal":false,
                 "elements_form":{
-                    "element_name":null,
+                    "element_name":'',
+                    "element_type":'',
+                    "isPercent":false,
+                    "isFixed":false,
+                    "isYearly":false,
+                    "isMonthly":false,
+                    "frequency":null,
+                    "frequency_year":null,
+                    "frequency_month":null,
+                    "accounts": null,
+                    "unselected_accounts": null,
+                    "target_accounts":[],
+                    "type_data": {"element_type": '', "value": ''},
+                },
+                "elements_edit_form":{
+                    "element_name":'',
                     "element_type":'',
                     "isPercent":false,
                     "isFixed":false,
@@ -207,7 +222,44 @@
                     this.elements_form.accounts = value
                     console.log(this.elements_form.accounts)
                 },
+                toggleEditElementType(e){
+                    switch(e.target.value){
+                        case 'percentage':
+                            this.elements_edit_form.isPercent = true;
+                            break;
+                        case 'fixed':
+                            this.elements_edit_form.isFixed = true;
+                            break;
+                        default:
+                            return false;
+                    }
+                },
+                toggleEditFrequency(e){
+                    switch(e.target.value){
+                        case 'yearly':
+                            this.elements_edit_form.isMonthly = false;
+                            this.elements_edit_form.isYearly = true;
 
+                            break;
+                        case 'monthly':
+                            this.elements_edit_form.isYearly = false;
+                            this.elements_edit_form.isMonthly = true;
+                            break;
+                        default:
+                            return false;
+                    }
+                },
+                validateEditDay(event){
+                    let input_val = event.target.value;
+                    if(input_val > max_day){
+                        this.elements_edit_form.frequency_month = max_day
+                    }
+
+                },
+                getEditAccounts(value){
+                    this.elements_edit_form.accounts = value
+                    console.log(this.elements_edit_form.accounts)
+                },
                 addElement(){
                     $('#tax-element-add-modal').modal('show')
                 },
@@ -257,7 +309,7 @@
                 },
                 updateElement: function () {
                     $('#edit-element').addClass('btn-loading btn-icon')
-                    axios.put('/mfn/tax-element/'+this.authority.id,this.elements_form)
+                    axios.put('/mfn/tax-element/'+this.authority.id,this.elements_edit_form)
                         .then(response=>{
                             $('#edit-element').removeClass('btn-loading btn-icon');
                             form_data = {};
@@ -274,7 +326,7 @@
                         })
                         .catch(e=>{
                             console.log(e.response.data);
-                            $('#edit-authority').removeClass('btn-loading btn-icon')
+                            $('#edit-element').removeClass('btn-loading btn-icon')
                             swal.fire({
                                 title:"Error!",
                                 text:e.response.data.message,
@@ -315,9 +367,8 @@
                 submitElement: function () {
                     $('#submit-element').addClass('btn-loading btn-icon')
                     // console.log(this.form_data)
-                    this.elements_form['authority'] = this.authority.id
-                    console.log(this.elements_form)
-                    axios.post('/mfn/tax-elements',this.elements_form)
+                    this.elements_edit_form['authority'] = this.authority.id
+                    axios.post('/mfn/tax-elements',this.elements_edit_form)
                         .then(response=>{
                             $('#submit-element').removeClass('btn-loading btn-icon')
                             this.form_data = {};
@@ -344,7 +395,7 @@
                             });
                         })
                 },
-               showElement: async function (id) {
+                showElement: async function (id) {
                     const self = this;
                    await  axios.get("/mfn/tax-element/" + id)
                         .then(function (response) {
@@ -352,31 +403,30 @@
                             self.single_element = response.data[0];
                             switch(frequency){
                                 case 'yearly':
-                                    self.elements_form.isYearly= true;
-                                    self.elements_form.isMonthly= false;
+                                    self.elements_edit_form.isYearly= true;
+                                    self.elements_edit_form.isMonthly= false;
                                     break;
                                 case 'monthly':
-                                    self.elements_form.isYearly= false;
-                                    self.elements_form.isMonthly= true;
+                                    self.elements_edit_form.isYearly= false;
+                                    self.elements_edit_form.isMonthly= true;
                                     break;
                                 default:
                                     break;
                             }
                             if (element_type === 'percentage') {
-                                self.elements_form.isPercent= true;
+                                self.elements_edit_form.isPercent= true;
                             }
                             self.form_data = response.data;
-                            self.elements_form.element_name =  name;
-                            self.elements_form.element_type = element_type;
-                            self.elements_form.target_accounts =  target_accounts;
-                            self.elements_form.accounts =  target_accounts_name;
-                            self.elements_form.unselected_accounts =  accounts_name;
-                            self.elements_form.frequency= frequency;
-                            self.elements_form.frequency_year= frequency_year;
-                            self.elements_form.frequency_month= frequency_month;
-                            self.elements_form.type_data=  JSON.parse(type_data);
+                            self.elements_edit_form.element_name =  name;
+                            self.elements_edit_form.element_type = element_type;
+                            self.elements_edit_form.target_accounts =  target_accounts;
+                            self.elements_edit_form.accounts =  target_accounts_name;
+                            self.elements_edit_form.unselected_accounts =  accounts_name;
+                            self.elements_edit_form.frequency= frequency;
+                            self.elements_edit_form.frequency_year= frequency_year;
+                            self.elements_edit_form.frequency_month= frequency_month;
+                            self.elements_edit_form.type_data=  JSON.parse(type_data);
                             $('#tax-element-edit-modal').modal('show');
-
                         })
                         .catch(function (error) {
                             var message = '';
@@ -461,7 +511,7 @@
                 plugins: ['remove_button'],
                 onChange: function(value) {
                     console.log(value)
-                    authority.getSelectedAccounts(value);
+                    authority.getAccounts(value);
                 }
             });
 
@@ -476,9 +526,6 @@
             $('.custom-datepicker').datepicker({
                 uiLibrary: 'bootstrap4',
                 format: 'yyyy-mm-dd'
-                /*close: function (e) {
-                    vm.due_date = e.target.value;
-                }*/
             });
         });
 

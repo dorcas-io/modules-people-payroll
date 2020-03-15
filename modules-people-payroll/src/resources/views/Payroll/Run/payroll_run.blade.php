@@ -64,7 +64,6 @@
 
                 @include('modules-people-payroll::Payroll.modals.add-payroll-run')
 
-                @include('modules-people-payroll::Payroll.modals.payroll-run-invoice')
 
 
             </div>
@@ -284,10 +283,10 @@
                 previousStep(step){
                     this.currentStep = step;
                 },
-                editRun(id)
+                async editRun(id)
                 {
                     const self = this;
-                    axios.get("/mpe/payroll-run/" + id)
+                    await axios.get("/mpe/payroll-run/" + id)
                         .then(function (response) {
                            const {title,run,status,employees,id} = response.data[0];
                            self.form_data.run = run;
@@ -295,7 +294,6 @@
                            self.form_data.status = status;
                            self.employees = employees.data;
                            self.form_data.run_id = id;
-                           console.log(employees);
                             self.employees.forEach(employee =>{
                                 self.table1.row.add([
                                     employee.id,
@@ -304,7 +302,6 @@
                                     employee.staff_code
                                 ]).draw(false)
                             });
-                            self.table1.columns().checkboxes.select(true)
                             $('#payroll-run-edit-modal').modal('show')
                         })
                         .catch(function (error) {
@@ -317,7 +314,7 @@
                                 showLoaderOnConfirm: true,
                             });
                         });
-                    console.log(Payroll.form_data)
+                    self.table1.columns().checkboxes.select(true)
                 },
                 setPayrollrun(){
                     dropdown.viewPayrollrunModal()
@@ -394,10 +391,10 @@
                         }
                     }
 
-                    $('#submit-run').addClass('btn-loading btn-icon')
                     axios.put('/mpe/payroll-run/'+this.form_data.run_id,this.form_data)
                         .then(response=>{
-                            $('#edit-run').removeClass('btn-loading btn-icon')
+                            // $('#edit-run').addClass('btn-loading btn-icon')
+
 
                             this.form_data = {};
                             dropdown.hidePayrollrunModal();
@@ -412,13 +409,14 @@
                         })
                         .catch(e=>{
                             console.log(e.response.data);
-                            $('#submit-run').removeClass('btn-loading btn-icon')
+                            $('#edit-run').removeClass('btn-loading btn-icon')
                             swal.fire({
                                 title:"Error!",
                                 text:e.response.data.message,
                                 type:"error",
                                 showLoaderOnConfirm: true,
                             });
+
                         })
                 },
             },
@@ -479,13 +477,17 @@
             if(row.status === 'processed'){
                 row.status = '<span class="badge badge-success">'+row.status+'</span>';
                 row.buttons =
-                    '<a class="btn btn-sm btn-primary text-white"  href="/run/employees/' + row.id + '">View  Payroll Employees</a>'
+                    '<a class="btn btn-sm btn-primary text-white"  href="/mpe/payroll-run/employees/' + row.id + '">View  Payroll Employees</a>'
+            }
+            else if (row.status === 'approved'){
+                row.status = '<span class="badge badge-primary">'+row.status+'</span>';
             }
             else{
                 row.buttons =
                     '<a class="btn btn-sm btn-cyan text-white" data-index="' + index + '"  data-action="editRun" data-id="' + row.id + '" data-name="' + row.title + '">Update</a> &nbsp; ' +
                     '<a class="btn btn-sm btn-danger text-white"   data-index="' + index + '" data-action="delete_run" data-id="' + row.id + '" data-name="' + row.title + '">Delete</a>' ;
             }
+
             if(row.status === 'draft'){
                 row.status = '<span class="badge badge-warning">'+row.status+'</span>';
             }

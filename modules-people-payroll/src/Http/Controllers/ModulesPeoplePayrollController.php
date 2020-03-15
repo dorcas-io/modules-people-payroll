@@ -5,6 +5,7 @@ use App\Dorcas\Hub\Utilities\UiResponse\UiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HomeController;
 use Hostville\Dorcas\Sdk;
+use http\Exception\RuntimeException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -975,5 +976,63 @@ class ModulesPeoplePayrollController extends Controller
                 return response()->json(['message' => $e->getMessage()], 400);
             }
         }
+
+        public function getPayrollProcessedEmployeesInvoice(Request $request, Sdk $sdk, string  $id){
+        try{
+            $resource = $sdk->createPayrollResource();
+            $response = $resource->send('get',['run',$id,'processed-employees']);
+            if(!$response->isSuccessful()){
+                $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Processed the Run Employees']))->setType(UiResponse::TYPE_ERROR);
+                return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+            }
+
+            $this->data['processed_employees'] = $response->getData(true);
+
+            $this->setViewUiResponse($request);
+            return view('modules-people-payroll::Payroll/Run/payroll_employees', $this->data);
+        }
+        catch (\Exception $e){
+            $response = (tabler_ui_html_response([$e]))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+        }
+    }
+
+    public function viewPaySlip(Request $request){
+//        try{
+            $response = $request->except('_token');
+            $this->data['header']['title'] = $response['firstname'] . ' Payslip';
+            $this->data['response'] = $response;
+            $response_extra = json_decode($response['employee_details'],true);
+            $allowances = array();
+            $transactions = array();
+            $baseSalary = array();
+            foreach ($response_extra as $key =>$value){
+                if($key === 'Allowances'){
+                    $allowances[$key] = $value ;
+
+                }
+                elseif ($key === 'Transactions'){
+                    $transactions[$key] = $value ;
+
+                }
+                else{
+                    $baseSalary[$key] = $value ;
+
+                }
+            }
+            $this->data['allowances'] = $allowances;
+            $this->data['transactions'] = $transactions;
+            $this->data['baseSalary'] = $baseSalary;
+            return view('modules-people-payroll::Payroll/Run/payroll_payslip', $this->data);
+
+//        }
+//        catch (\Exception $e){
+//            $this->setViewUiResponse($request);
+//            $response = (tabler_ui_html_response(['Something went Wrong']))->setType(UiResponse::TYPE_ERROR);
+//            return redirect(url()->route('payroll-run-employees',['id'=>$request->uuid]))->with('UiResponse', $response);
+//
+//
+//        }
+    }
 
 }

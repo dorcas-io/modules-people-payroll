@@ -44,6 +44,8 @@ Route::group(['namespace' => 'Dorcas\ModulesPeoplePayroll\Http\Controllers', 'mi
     Route::get('payroll-run-search','ModulesPeoplePayrollController@searchRun')->name('payroll-run-search');
     Route::post('payroll-run','ModulesPeoplePayrollController@createRun')->name('payroll-run');
     Route::get('payroll-run/{id}','ModulesPeoplePayrollController@singleRun')->name('payroll-run');
+    Route::get('payroll-run/employees/{id}','ModulesPeoplePayrollController@getPayrollProcessedEmployeesInvoice')->name('payroll-run-employees');
+    Route::post('payroll-employee-payslip','ModulesPeoplePayrollController@viewPaySlip')->name('view-payslip');
     Route::put('payroll-run/{id}','ModulesPeoplePayrollController@updateRun')->name('payroll-run');
     Route::delete('payroll-run/{id}','ModulesPeoplePayrollController@deleteRun')->name('payroll-run');
 

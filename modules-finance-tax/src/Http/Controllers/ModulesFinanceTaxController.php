@@ -313,10 +313,11 @@ class ModulesFinanceTaxController extends Controller
                 ->addBodyParam('element_name',$request->element_name)
                 ->addBodyParam('type_data',$request->type_data)
                 ->addBodyParam('frequency',$request->frequency)
-                ->addBodyParam('target_accounts',$request->accounts)
+                ->addBodyParam('target_accounts',$request->target_accounts)
                 ->addBodyParam('frequency_year',$request->frequency_year)
                 ->addBodyParam('frequency_month',$request->frequency_month);
             $response = $resource->send('put', ['element',$id]);
+            dd($response);
             if (!$response->isSuccessful()) {
                 $message = $response->errors[0]['title'] ?? '';
                 throw new \RuntimeException('Failed while updating the Tax Element ' . $message);
