@@ -477,6 +477,8 @@
             if(row.status === 'processed'){
                 row.status = '<span class="badge badge-success">'+row.status+'</span>';
                 row.buttons =
+                    '<a class="btn btn-sm btn-primary text-white"  href="/mpe/payroll-run/total/employees/' + row.id + '">View Payroll Slip</a> &nbsp;' +
+                    '<a class="btn btn-sm btn-primary text-white"  href="/mpe/payroll-run/total/authorities/' + row.id + '">View Payroll Authorities Slip</a> &nbsp;' +
                     '<a class="btn btn-sm btn-primary text-white"  href="/mpe/payroll-run/employees/' + row.id + '">View  Payroll Employees</a>'
             }
             else if (row.status === 'approved'){

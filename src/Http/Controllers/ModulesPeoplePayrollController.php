@@ -982,10 +982,13 @@ class ModulesPeoplePayrollController extends Controller
             $resource = $sdk->createPayrollResource();
             $response = $resource->send('get',['run',$id,'processed-employees']);
             if(!$response->isSuccessful()){
-                $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Processed the Run Employees']))->setType(UiResponse::TYPE_ERROR);
+                $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run']))->setType(UiResponse::TYPE_ERROR);
                 return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
             }
-
+            if($response->getData() === '[]'){
+                $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run ']))->setType(UiResponse::TYPE_ERROR);
+                return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+            }
             $this->data['processed_employees'] = $response->getData(true);
 
             $this->setViewUiResponse($request);
@@ -998,7 +1001,7 @@ class ModulesPeoplePayrollController extends Controller
     }
 
     public function viewPaySlip(Request $request){
-//        try{
+        try{
             $response = $request->except('_token');
             $this->data['header']['title'] = $response['firstname'] . ' Payslip';
             $this->data['response'] = $response;
@@ -1025,14 +1028,51 @@ class ModulesPeoplePayrollController extends Controller
             $this->data['baseSalary'] = $baseSalary;
             return view('modules-people-payroll::Payroll/Run/payroll_payslip', $this->data);
 
-//        }
-//        catch (\Exception $e){
-//            $this->setViewUiResponse($request);
-//            $response = (tabler_ui_html_response(['Something went Wrong']))->setType(UiResponse::TYPE_ERROR);
-//            return redirect(url()->route('payroll-run-employees',['id'=>$request->uuid]))->with('UiResponse', $response);
-//
-//
-//        }
+        }
+        catch (\Exception $e){
+            $this->setViewUiResponse($request);
+            $response = (tabler_ui_html_response(['Something went Wrong']))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-run-employees',['id'=>$request->uuid]))->with('UiResponse', $response);
+
+
+        }
+    }
+
+
+    public function getTotalPayrollAmount(Sdk $sdk, string  $id){
+        $this->data['header']['title'] = 'Total' . ' Payslip';
+        $resource = $sdk->createPayrollResource();
+        $response = $resource->send('get',['run',$id,'processed-employees']);
+        if(!$response->isSuccessful() ) {
+            $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run']))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+        }
+        if($response->getData() === '[]'){
+            $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run ']))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+        }
+        $this->data['payment_date'] = collect($response->getData(true))->pluck('created_at')->first();
+        $this->data['processed_employees'] = $response->getData(true);
+        $this->data['total_amount_payable'] = collect($response->getData(true))->sum('amount');
+        return view('modules-people-payroll::Payroll/Run/payroll_total_payslip', $this->data);
+    }
+
+    public function getTotalPayrollAuthorityAmount(Sdk $sdk, string  $id){
+        $this->data['header']['title'] = 'Total' . ' Payslip';
+        $resource = $sdk->createPayrollResource();
+        $response = $resource->send('get',['run',$id,'processed-authorities']);
+        if(!$response->isSuccessful() ) {
+            $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run']))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+        }
+        if($response->getData() === '[]'){
+            $response = (tabler_ui_html_response([$response->errors[0]['title'] ?? 'Failed to get Data for the Payroll Run ']))->setType(UiResponse::TYPE_ERROR);
+            return redirect(url()->route('payroll-runs'))->with('UiResponse', $response);
+        }
+        $this->data['payment_date'] = collect($response->getData(true))->pluck('created_at')->first();
+        $this->data['processed_authorities'] = collect($response->getData(true));
+        $this->data['total_amount_payable'] = collect($response->getData(true))->sum('total_amount');
+        return view('modules-people-payroll::Payroll/Run/payroll_total_authorities', $this->data);
     }
 
 }

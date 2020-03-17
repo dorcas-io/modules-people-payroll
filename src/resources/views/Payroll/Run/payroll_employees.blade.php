@@ -50,7 +50,7 @@
                                 <input type="hidden" value="{{$employee['job_title']}}" name="job_title">
                                 <input type="hidden" value="{{$employee['staff_code']}}" name="staff_code">
                                 <input type="hidden" value="{{$employee['email']}}" name="email">
-                                <input type="hidden" value="{{$employee['created_at']}}" name="date">
+                                <input type="hidden" value="{{$employee['updated_at']}}" name="date">
                                 <button type="submit" class="btn btn-primary btn-sm"  >View Payslip</button>
                             </form>
                         </td>

@@ -63,87 +63,97 @@
 
                             </td>
                             <td class="text-right"></td>
-                            <td class="text-right">{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['base_salary'])}}</td>
+                            <td class="text-right">{{'&#8358;'.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['base_salary'],'full')}}</td>
                         </tr>
 
                         <tr>
                             <td colspan="4" class="strong text-right">Gross Payment</td>
-                            <td class="text-right">{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['base_salary'])}}</td>
+                            <td class="text-right">{{'&#8358;'.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['base_salary'],'full')}}</td>
                         </tr>
 
                         </tbody>
-                        <thead class="bg-primary">
+                        <thead class="bg-secondary">
                         <tr>
                             <th class="text-center" style="width: 1%"></th>
-                            <th>Company Allowances</th>
-                            <th> type </th>
-                            <th> name</th>
-                            <th class="text-right" style="width: 1%">Amount</th>
+                            <th class="text-dark">Company Allowances</th>
+                            <th class="text-dark"> type </th>
+                            <th class="text-dark"> name</th>
+                            <th class="text-right text-dark" style="width: 1%">Amount</th>
                         </tr>
                         </thead>
                         <tbody>
                         @if(!empty($allowances))
                             @forelse($allowances['Allowances'] as $key => $allowance)
-                                @php  $i++  @endphp
-
-                                <tr>
-                                    <td class="text-center">{{$i}}</td>
                                     @if ($key === 'deduction')
-                                        <td></td>
-                                        <td>{{$key}}</td>
                                         @foreach($allowances['Allowances'][$key] as $key2 => $deduction)
-                                            <td>{{$key2}}</td>
-                                            <td>{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($deduction)}}</td>
+                                            @php  $i++  @endphp
+                                            <tr>
+                                                <td class="text-center">{{$i}}</td>
+
+                                                <td>Allowance</td>
+                                                <td>{{$key}}</td>
+                                                <td>{{$key2}}</td>
+                                                <td class="text-right" style="width: 1%">{{'&#8358; '.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($deduction,'full')}}</td>
+                                            </tr>
                                         @endforeach
                                     @elseif($key === 'benefits')
-                                        <td></td>
-                                        <td>{{$key}}</td>
+
                                         @foreach($allowances['Allowances'][$key] as $key2 => $addition)
-                                            <td>{{$key2}}</td>
-                                            <td>{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($addition)}}</td>
+                                            @php  $i++  @endphp
+
+                                            <tr>
+                                                <td class="text-center">{{$i}}</td>
+                                                <td>Allowance</td>
+                                                <td>{{$key}}</td>
+                                                <td>{{$key2}}</td>
+                                                <td class="text-right" style="width: 1%">{{'&#8358; '.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($addition,'full')}}</td>
+                                            </tr>
                                         @endforeach
                                     @endif
                                     {{--                                <td>{{$allowance['']}}</td>--}}
-                                </tr>
                             @empty
                                 <p>No Allowances for this Employee</p>
                             @endforelse
                         @endif
 
                         </tbody>
-                        <thead class="bg-info">
+                        <thead class="bg-gray">
                         <tr>
                             <th class="text-center" style="width: 1%"></th>
-                            <th> Special SpecialAdditions / Subtractions</th>
-                            <th> type </th>
-                            <th> name</th>
-                            <th class="text-right" style="width: 1%">Amount</th>
+                            <th class="text-dark"> Special SpecialAdditions / Subtractions</th>
+                            <th class="text-dark"> type </th>
+                            <th class="text-dark"> name</th>
+                            <th class="text-right text-dark" style="width: 1%">Amount</th>
                         </tr>
                         </thead>
                         <tbody>
                         @if(!empty($transactions))
                             @forelse($transactions['Transactions'] as $key => $transaction)
-                                @php  $i++;  @endphp
 
-                                <tr>
-                                    <td class="text-center">{{$i}}</td>
                                     @if ($key === 'deductions')
-                                        <td></td>
-                                        <td>{{$key}}</td>
                                         @foreach($transactions['Transactions'][$key] as $key2 => $deduction)
-                                            <td>{{$key2}}</td>
-                                            <td>{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($deduction)}}</td>
+                                            @php  $i++;  @endphp
+                                           <tr>
+                                               <td class="text-center">{{$i}}</td>
+                                               <td> Deductions</td>
+                                               <td>{{$key}}</td>
+                                               <td>{{$key2}}</td>
+                                               <td class="text-right" style="width: 1%">{{'&#8358; '.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($deduction,'full')}}</td>
+                                           </tr>
                                         @endforeach
                                     @elseif($key === 'additions')
-                                        <td></td>
-                                        <td>{{$key}}</td>
                                         @foreach($transactions['Transactions'][$key] as $key2 => $addition)
-                                            <td>{{$key2}}</td>
-                                            <td>{{\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($addition)}}</td>
+                                            @php  $i++;  @endphp
+                                            <tr>
+                                                <td class="text-center">{{$i}}</td>
+                                                <td> Benefits</td>
+                                                <td>{{$key}}</td>
+                                                <td>{{$key2}}</td>
+                                                <td class="text-right" style="width: 1%">{{'&#8358;'.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($addition,'full')}}</td>
+                                            </tr>
                                         @endforeach
                                     @endif
                                     {{--                                <td>{{$allowance['']}}</td>--}}
-                                </tr>
                             @empty
                                 <p>No Allowances for this Employee</p>
                             @endforelse
@@ -152,7 +162,7 @@
                         </tbody>
                         <tr>
                             <td colspan="4" class="font-weight-bold text-uppercase text-right">Total Payable</td>
-                            <td class="font-weight-bold text-right">{{'NGN'. \Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['payable_amount'])}}</td>
+                            <td class="font-weight-bold text-right">{{'&#8358;'. \Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($response['payable_amount'],'full')}}</td>
                         </tr>
                     </table>
 
