@@ -1,7 +1,7 @@
 @extends('layouts.tabler')
 @section('head_css')
     <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{cdn('vendors/Datatable/data-tables.min.css')}}"rel="stylesheet" type="text/css" />
+    <link href="{{cdn('zvendors/Datatable/data-tables.min.css')}}"rel="stylesheet" type="text/css" />
     <link href="{{cdn('vendors/Datatable/data-tables.checkbox.min.css')}}"rel="stylesheet" type="text/css" />
 @endsection
 

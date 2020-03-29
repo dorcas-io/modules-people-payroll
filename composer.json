@@ -35,5 +35,15 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "scripts": {
+    "post-install-cmd": [
+      "...",
+      "php artisan vendor:publish --tag=public --force"
+    ],
+    "post-update-cmd": [
+      "...",
+      "php artisan vendor:publish --tag=public --force"
+    ]
+  }
 }

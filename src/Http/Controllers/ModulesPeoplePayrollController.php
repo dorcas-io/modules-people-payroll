@@ -182,21 +182,21 @@ class ModulesPeoplePayrollController extends Controller
         $sdk = $sdk ?: app(Sdk::class);
         $company = auth()->user()->company(true, true);
         # get the company
-//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
-//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-//                ->send('get', ['allowance']);
-//            if (!$response->isSuccessful()) {
-//                return null;
-//            }
-//            return collect($response->getData())->map(function ($allowances) {
-//                return (object) $allowances;
-//            });
-//        });
-        $allowances = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-            ->send('get', ['allowance']);
-        if (!$allowances->isSuccessful()) {
-            return null;
-        }
+        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
+            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+                ->send('get', ['allowance']);
+            if (!$response->isSuccessful()) {
+                return null;
+            }
+            return collect($response->getData())->map(function ($allowances) {
+                return (object) $allowances;
+            });
+        });
+//        $allowances = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//            ->send('get', ['allowance']);
+//        if (!$allowances->isSuccessful()) {
+//            return null;
+//        }
         return $allowances;
     }
 
@@ -624,21 +624,21 @@ class ModulesPeoplePayrollController extends Controller
         $sdk = $sdk ?: app(Sdk::class);
         $company = auth()->user()->company(true, true);
         # get the company
-//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
-//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-//                ->send('get', ['allowance']);
-//            if (!$response->isSuccessful()) {
-//                return null;
-//            }
-//            return collect($response->getData())->map(function ($allowances) {
-//                return (object) $allowances;
-//            });
-//        });
-        $transaction = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-            ->send('get', ['transaction']);
-        if (!$transaction->isSuccessful()) {
-            return null;
-        }
+        $transaction = Cache::remember('payroll.transaction.'.$company->id, 30, function () use ($sdk) {
+            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+                ->send('get', ['transaction']);
+            if (!$response->isSuccessful()) {
+                return null;
+            }
+            return collect($response->getData())->map(function ($allowances) {
+                return (object) $allowances;
+            });
+        });
+//        $transaction = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//            ->send('get', ['transaction']);
+//        if (!$transaction->isSuccessful()) {
+//            return null;
+//        }
         return $transaction;
     }
 
@@ -782,21 +782,21 @@ class ModulesPeoplePayrollController extends Controller
         $sdk = $sdk ?: app(Sdk::class);
         $company = auth()->user()->company(true, true);
         # get the company
-//        $allowances = Cache::remember('payroll.allowances.'.$company->id, 30, function () use ($sdk) {
-//            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-//                ->send('get', ['allowance']);
-//            if (!$response->isSuccessful()) {
-//                return null;
-//            }
-//            return collect($response->getData())->map(function ($allowances) {
-//                return (object) $allowances;
-//            });
-//        });
-        $runs = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
-            ->send('get', ['run']);
-        if (!$runs->isSuccessful()) {
-            return null;
-        }
+        $runs = Cache::remember('payroll.runs.'.$company->id, 30, function () use ($sdk) {
+            $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+                ->send('get', ['run']);
+            if (!$response->isSuccessful()) {
+                return null;
+            }
+            return collect($response->getData())->map(function ($allowances) {
+                return (object) $allowances;
+            });
+        });
+//        $runs = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
+//            ->send('get', ['run']);
+//        if (!$runs->isSuccessful()) {
+//            return null;
+//        }
         return $runs;
     }
 

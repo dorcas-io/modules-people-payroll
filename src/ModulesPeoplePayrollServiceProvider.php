@@ -17,6 +17,9 @@ class ModulesPeoplePayrollServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'modules-people-payroll');
         $this->publishes([
+            __DIR__ . '/public/vendors/Datatable' => public_path('vendors/Datatable'),
+        ],'public');
+        $this->publishes([
             __DIR__ . '/config/modules-people-payroll.php' => config_path('modules-people-payroll.php'),
         ], 'config');
         // adds models to directory path
