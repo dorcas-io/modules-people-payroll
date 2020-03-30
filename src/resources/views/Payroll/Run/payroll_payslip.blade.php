@@ -96,7 +96,7 @@
                                                 <td class="text-right" style="width: 1%">{{'&#8358; '.\Dorcas\ModulesPeoplePayroll\Http\Helpers\Helper::MoneyConvert($deduction,'full')}}</td>
                                             </tr>
                                         @endforeach
-                                    @elseif($key === 'benefits')
+                                    @elseif($key === 'benefit')
 
                                         @foreach($allowances['Allowances'][$key] as $key2 => $addition)
                                             @php  $i++  @endphp
