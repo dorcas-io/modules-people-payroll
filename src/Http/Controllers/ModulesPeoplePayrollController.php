@@ -344,6 +344,7 @@ class ModulesPeoplePayrollController extends Controller
         $company = auth()->user()->company(true, true);
         # get the company
 
+
 //        $allowances = Cache::remember('payroll.paygroups.'.$company->id, 30, function () use ($sdk) {
             $response = $sdk->createPayrollResource()->addQueryArgument('limit', 10000)
                 ->send('get', ['paygroup']);
