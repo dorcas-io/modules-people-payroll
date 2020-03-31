@@ -21,11 +21,11 @@ return [
         'route' => 'people-teams',
         'icon' => 'fe fe-flag',
     ],
-    'people-payroll-authorities' => [
-        'title' => 'Payroll',
-        'route' => 'payroll-main',
-        'icon' => 'fe fe-users',
-    ],
+//    'people-payroll-authorities' => [
+//        'title' => 'Payroll',
+//        'route' => 'payroll-main',
+//        'icon' => 'fe fe-users',
+//    ],
 
 
 ];
