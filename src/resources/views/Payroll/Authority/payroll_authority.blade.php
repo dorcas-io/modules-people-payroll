@@ -220,7 +220,7 @@
                             return axios.delete("/mpe/payroll-authorities/" + id)
                                 .then(function (response) {
                                     $('#authorities-table').bootstrapTable('removeByUniqueId', response.data.id);
-                                    return swal("Deleted!", "The product was successfully deleted.", "success");
+                                    return swal("Deleted!", "The Authority was successfully deleted.", "success");
                                 }).catch(function (error) {
                                     var message = '';
                                     console.log(error);

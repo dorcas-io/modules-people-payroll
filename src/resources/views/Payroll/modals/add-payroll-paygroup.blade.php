@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="paygroup">Name</label>
-                                <input class="form-control" id="paygroup" v-model="form_data.paygroup_name" placeholder="Enter Payroll Alloance Name" type="text" required>
+                                <input class="form-control" id="paygroup" v-model="form_data.paygroup_name" placeholder="Add Paygroup Title " type="text" required>
                             </div>
                         </div>
                     </fieldset>
