@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add  Payroll Run</h5>
+                <h5 class="modal-title">Add  Session</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,19 +11,19 @@
                         <div class="row" v-if="currentStep == 1">
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Title</label>
-                                <input class="form-control" id="run" v-model="form_data.title" placeholder="Enter Run  Title" type="text" required>
+                                <input class="form-control" id="run" v-model="form_data.title" placeholder="Enter Session  Title" type="text" required>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="form-label" for="run">Run</label>
-                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Payroll Run eg(February Run)" type="text" required>
+                                <label class="form-label" for="run">Session Run</label>
+                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Session Run Name eg(February Run)" type="text" required>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="form-label" for="run">Run Status</label>
+                                <label class="form-label" for="run">Session Status</label>
                                 <select class="select-dropdown form-control" v-model="form_data.status">
                                     <option value="draft">Draft</option>
                                 </select>
                             </div>
-                            <button  class="btn btn-primary float-right " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
+                            <button  class="btn btn-primary float-right m-4 " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
 
                         </div>
                         <div class="row" id="tables" style="display: none">
@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="card-body">
                                         Add <strong>Paygroups</strong>, <strong>Employees</strong> ,
-                                        for this Run:
+                                        for this Session:
                                         <ul class="nav nav-tabs nav-justified">
                                             <li class="nav-item">
                                                 <a class="nav-link active" data-toggle="tab" href="#paygroups">Paygroups </a>
@@ -111,7 +111,7 @@
                                 </div>
 
                             </div>
-                            <button  class="btn btn-primary float-left " type="button" @click.prevent="goToStep(1)">Previous Step <i class="fe fe-arrow-left"></i></button>
+                            <button  class="btn btn-primary float-left m-4" type="button" @click.prevent="goToStep(1)">Previous Step <i class="fe fe-arrow-left"></i></button>
 
                         </div>
                     </fieldset>

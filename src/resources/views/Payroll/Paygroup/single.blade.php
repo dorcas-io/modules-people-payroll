@@ -32,11 +32,19 @@
                     <div class="card">
                         <div class="card-status bg-blue"></div>
                         <div class="card-header">
-                            <h3 class="card-title">Activity</h3>
+                            <h3 class="card-title">
+                                Activity
+
+                            </h3>
+                            <a class="ml-auto" href="{{route('payroll-main')}}">
+                                <span><i class="fe fe-arrow-left"></i></span>
+                                Payroll Home
+                            </a>
                         </div>
                         <div class="card-body">
                             Manage <strong>Employees</strong>, <strong>Allowances</strong>
                             for this Paygroup:
+
                             <ul class="nav nav-tabs nav-justified">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#employees">Employees</a>
@@ -75,13 +83,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <div class="form-group ml-auto">
+                                        <div class="container">
+                                            <div class="row">
                                                 <a class="btn btn-primary btn-sm " href="#" v-on:click.prevent="showEmployees">Add Employees</a>
+                                                <a class="btn btn-danger btn-sm ml-auto"  id="delete-employees" href="#"  >Delete Employees</a>
 
-                                        </div>
-                                        <div class="form-group mr-auto">
-                                            <a class="btn btn-danger btn-sm "  id="delete-employees" href="#"  >Delete Employees</a>
-
+                                            </div>
                                         </div>
                                     </div>
                                     &nbsp;
@@ -115,13 +122,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <div class="form-group ml-auto">
-                                            <a class="btn btn-primary btn-sm" href="#" v-on:click.prevent="showAllowances">Add Allowance</a>
+                                        <div class="container">
+                                            <div class="row">
+                                                <a class="btn btn-primary btn-sm" href="#" v-on:click.prevent="showAllowances">Add Allowance</a>
+                                                <a class="btn btn-danger btn-sm  ml-auto"  id="delete-allowances" href="#"  >Delete Allowances</a>
 
-                                        </div>
-                                        <div class="form-group mr-auto">
-                                            <a class="btn btn-danger btn-sm "  id="delete-allowances" href="#"  >Delete Allowances</a>
-
+                                            </div>
                                         </div>
                                     </div>
                                     &nbsp;

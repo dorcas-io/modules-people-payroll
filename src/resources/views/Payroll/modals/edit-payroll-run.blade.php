@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Update  Payroll Run</h5>
+                <h5 class="modal-title">Update  Session</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,11 +11,11 @@
                         <div class="row" v-if="currentStep == 1">
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Title</label>
-                                <input class="form-control" id="run" v-model="form_data.title" placeholder="Enter Run  Title" type="text" required>
+                                <input class="form-control" id="run" v-model="form_data.title" placeholder="Enter Session  Title" type="text" required>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Run</label>
-                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Payroll Run Name" type="text" required>
+                                <input class="form-control" id="run" v-model="form_data.run" placeholder="Enter Sesssion Run Name" type="text" required>
                             </div>
                             <div class="form-group col-md-12">
                                 <label class="form-label" for="run">Run Status</label>
@@ -24,7 +24,7 @@
                                     <option value="approved">Approved</option>
                                 </select>
                             </div>
-                            <button  class="btn btn-primary float-right " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
+                            <button  class="btn btn-primary float-right m-4 " type="button" @click.prevent="goToStep(2)" >Next Step <i class="fe fe-arrow-right"></i></button>
 
                         </div>
                         <div class="row" id="edit-tables" style="display: none">
@@ -141,7 +141,7 @@
                                 </div>
 
                             </div>
-                            <button  class="btn btn-primary float-left " type="button" @click.prevent="goToStep(1)">Previous Step <i class="fe fe-arrow-left"></i></button>
+                            <button  class="btn btn-primary float-left  m-4 " type="button" @click.prevent="goToStep(1)">Previous Step <i class="fe fe-arrow-left"></i></button>
 
                         </div>
                     </fieldset>

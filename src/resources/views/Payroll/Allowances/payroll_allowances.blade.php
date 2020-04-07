@@ -13,6 +13,16 @@
         @include('layouts.blocks.tabler.sub-menu')
         <div class="col-md-9 col-xl-9">
             <div class="row row-cards row-deck " >
+                <a href="#" class="btn btn-primary col-md-2 ml-auto mb-2" data-toggle="modal" data-target="#payroll-allowances-add-modal"  >
+                    Add  Allowance
+                </a>
+                <div class="col-md-12 align-items-end" >
+
+                    <a href="{{route('payroll-main')}}">
+                        <span><i class="fe fe-arrow-left"></i></span>
+                        Payroll Home
+                    </a>
+                </div>
                 <div class="col-sm-12" id="payroll_allowance">
                     @if(!empty($payroll_allowances))
                         <div class="table-responsive">

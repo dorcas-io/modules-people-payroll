@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add  Payroll Allowance</h5>
+                <h5 class="modal-title">Add   Allowance</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -29,7 +29,7 @@
                                 </table>
                             </div>
                             <div class="col-md-12">
-                                <button type="button" id="allowance-add-form" class="btn btn-primary pull-left ">Add Allowance(s)</button>
+                                <button type="button" id="allowance-add-form" class="btn btn-primary pull-left ">Submit</button>
 
                             </div>
                         </div>

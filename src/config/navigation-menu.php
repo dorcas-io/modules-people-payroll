@@ -16,16 +16,16 @@ return [
         'route' => 'people-departments',
         'icon' => 'fe fe-grid',
     ],
+
     'people-teams' => [
         'title' => 'Teams',
         'route' => 'people-teams',
         'icon' => 'fe fe-flag',
     ],
-//    'people-payroll-authorities' => [
-//        'title' => 'Payroll',
-//        'route' => 'payroll-main',
-//        'icon' => 'fe fe-users',
-//    ],
-
+    'people-payroll' => [
+        'title' => 'Payroll',
+        'route' => 'payroll-main',
+        'icon' => 'fe fe-users',
+    ],
 
 ];

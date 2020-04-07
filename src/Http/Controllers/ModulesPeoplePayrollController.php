@@ -25,12 +25,9 @@ class ModulesPeoplePayrollController extends Controller
     public function index(Request $request, Sdk $sdk){
         try{
             $this->data['page']['title'] .= ' &rsaquo; Payroll';
-            $this->data['header']['title'] = 'People Payroll';
-            $this->data['selectedSubMenu'] = 'payroll-main';
-            $this->data['submenuAction'] = '';
-
+            $this->data['header']['title'] = ' Payroll';
+            $this->data['selectedSubMenu'] = 'people-payroll';
             $this->setViewUiResponse($request);
-
             return view('modules-people-payroll::Payroll/index',$this->data);
         }catch (\Exception $e){
             $this->setViewUiResponse($request);
@@ -45,7 +42,9 @@ class ModulesPeoplePayrollController extends Controller
     public function authorityIndex(Request $request, Sdk $sdk, string $id = null){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Authority';
-            $this->data['header']['title'] = 'People Payroll Authority';
+            $this->data['header']['title'] = ' Authority';
+            $this->data['selectedSubMenu'] = 'people-payroll';
+
             $this->data['submenuAction'] = '';
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
@@ -203,8 +202,10 @@ class ModulesPeoplePayrollController extends Controller
     public function allowanceIndex(Request $request, Sdk $sdk, string $id = null){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Allowance';
-            $this->data['header']['title'] = 'People Payroll Allowance';
+            $this->data['header']['title'] = '  Allowance';
             $this->data['submenuAction'] = '';
+            $this->data['selectedSubMenu'] = 'people-payroll';
+
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
             $this->data['payroll_allowances'] = $this->getPayrollAlowances($sdk)->getData(true);
@@ -361,8 +362,10 @@ class ModulesPeoplePayrollController extends Controller
     public function paygroupIndex(Request $request, Sdk $sdk, string $id = null){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Pay Group';
-            $this->data['header']['title'] = 'People Payroll Pay Group';
+            $this->data['header']['title'] = ' Pay-Groups';
             $this->data['submenuAction'] = '';
+            $this->data['selectedSubMenu'] = 'people-payroll';
+
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
             $this->data['payroll_paygroups'] = $this->getPayrollPaygroups($sdk);
@@ -476,7 +479,9 @@ class ModulesPeoplePayrollController extends Controller
     public function singlePaygroup(Request $request , Sdk $sdk, string $id){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll ';
-            $this->data['header']['title'] = 'People Pay Group';
+            $this->data['header']['title'] = 'Pay-Groups';
+            $this->data['selectedSubMenu'] = 'people-payroll';
+
             $this->data['submenuAction'] = '';
             $this->data['args'] = $request->query->all();
             $this->setViewUiResponse($request);
@@ -672,7 +677,9 @@ class ModulesPeoplePayrollController extends Controller
     public function transactionIndex(Request $request, Sdk $sdk){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Transactions';
-            $this->data['header']['title'] = 'People Payroll Transactions';
+            $this->data['header']['title'] = ' Transactions';
+            $this->data['selectedSubMenu'] = 'people-payroll';
+
             $this->data['submenuAction'] = '';
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
@@ -804,7 +811,8 @@ class ModulesPeoplePayrollController extends Controller
     public function runIndex(Request $request, Sdk $sdk){
         try {
             $this->data['page']['title'] .= ' &rsaquo; Payroll Run';
-            $this->data['header']['title'] = 'People Payroll Run';
+            $this->data['header']['title'] = ' Sessions';
+            $this->data['selectedSubMenu'] = 'people-payroll';
             $this->data['submenuAction'] = '';
             $this->setViewUiResponse($request);
             $this->data['args'] = $request->query->all();
@@ -1005,6 +1013,7 @@ class ModulesPeoplePayrollController extends Controller
         try{
             $response = $request->except('_token');
             $this->data['header']['title'] = $response['firstname'] . ' Payslip';
+            $this->data['selectedSubMenu'] = 'people-payroll';
             $this->data['response'] = $response;
             $response_extra = json_decode($response['employee_details'],true);
             $allowances = array();
@@ -1042,6 +1051,8 @@ class ModulesPeoplePayrollController extends Controller
 
     public function getTotalPayrollAmount(Sdk $sdk, string  $id){
         $this->data['header']['title'] = 'Total' . ' Payslip';
+        $this->data['selectedSubMenu'] = 'people-payroll';
+
         $resource = $sdk->createPayrollResource();
         $response = $resource->send('get',['run',$id,'processed-employees']);
         if(!$response->isSuccessful() ) {
@@ -1060,6 +1071,7 @@ class ModulesPeoplePayrollController extends Controller
 
     public function getTotalPayrollAuthorityAmount(Sdk $sdk, string  $id){
         $this->data['header']['title'] = 'Total' . ' Payslip';
+        $this->data['selectedSubMenu'] = 'people-payroll';
         $resource = $sdk->createPayrollResource();
         $response = $resource->send('get',['run',$id,'processed-authorities']);
         if(!$response->isSuccessful() ) {

@@ -16,18 +16,18 @@
               <div class="col-sm-6">
                   @component('layouts.blocks.tabler.empty-fullpage')
                       @slot('title')
-                          Configurations
+                          Configuration
                       @endslot
                           @slot('buttons')
                           @endslot
                             <div class="card-body">
                                 <div class="card-text">
-                                    Configurations: Manage multiple settings such as payroll authorities, paygroups and allowances
+                                     Manage multiple settings such as payroll authorities, paygroups and allowances
                                 </div>
                             </div>
                           <div class="row row-cards row-deck">
                               <div class="col-md-4 mt-4 ">
-                                  <a  href="{{route('payroll-authorities')}}" class="btn btn-primary  "> Authority </a>
+                                  <a  href="{{route('payroll-authorities')}}" class="btn btn-primary  "> Authorities </a>
 
                               </div>
                               <div class="col-md-4 mt-4">
@@ -36,7 +36,7 @@
 
                               </div>
                               <div class="col-md-4 mt-4 ">
-                                  <a href="{{route('payroll-paygroup')}}" class="btn btn-primary ">Paygroup </a>
+                                  <a href="{{route('payroll-paygroup')}}" class="btn btn-primary ">Pay-groups </a>
 
                               </div>
 
@@ -46,14 +46,14 @@
                 <div class="col-sm-6">
                     @component('layouts.blocks.tabler.empty-fullpage')
                         @slot('title')
-                            Payroll Transactions
+                             Transactions
                         @endslot
                             <div class="card-body">
                                 <div class="card-text">
-                                    Transactions: Add one-off or recurring  payroll transactions for employees
+                                     Add one-off or recurring  payroll transactions for employees
                                 </div>
                             </div>
-                        <a href="{{route('payroll-transactions')}}" class="btn btn-primary">Transactions </a>
+                        <a href="{{route('payroll-transactions')}}" class="btn btn-primary">Manage </a>
                         &nbsp;
                         @slot('buttons')
                         @endslot
@@ -64,14 +64,14 @@
                 <div class="col-sm-6">
                     @component('layouts.blocks.tabler.empty-fullpage')
                         @slot('title')
-                            Payroll Run
+                             Sessions
                         @endslot
                             <div class="card-body">
                                 <div class="card-text">
-                                    Run: Create or Manage a Payroll Exercise
+                                   Create and  Manage a Payroll Session
                                 </div>
                             </div>
-                        <a href="{{route('payroll-runs')}}" class="btn btn-primary">Run </a>
+                        <a href="{{route('payroll-runs')}}" class="btn btn-primary">Manage </a>
                         &nbsp;
                         @slot('buttons')
                         @endslot
