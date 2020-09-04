@@ -18,14 +18,14 @@ class ModulesPeoplePayrollServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'modules-people-payroll');
         $this->publishes([
             __DIR__ . '/public/vendors/Datatable' => public_path('vendors/Datatable'),
-        ],'public');
+        ],'dorcas-modules');
         $this->publishes([
             __DIR__ . '/config/modules-people-payroll.php' => config_path('modules-people-payroll.php'),
-        ], 'config');
+        ], 'dorcas-modules');
         // adds models to directory path
         $this->publishes([
             __DIR__ . '/Models/Payroll.php' => app_path('Models/Payroll.php')
-        ]);
+        ],'dorcas-modules');
 
 
     }
