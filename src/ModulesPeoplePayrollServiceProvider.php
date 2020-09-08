@@ -23,9 +23,9 @@ class ModulesPeoplePayrollServiceProvider extends ServiceProvider
             __DIR__ . '/config/modules-people-payroll.php' => config_path('modules-people-payroll.php'),
         ], 'dorcas-modules');
         // adds models to directory path
-        $this->publishes([
+        /*$this->publishes([
             __DIR__ . '/Models/Payroll.php' => app_path('Models/Payroll.php')
-        ],'dorcas-modules');
+        ],'dorcas-modules');*/
 
 
     }
