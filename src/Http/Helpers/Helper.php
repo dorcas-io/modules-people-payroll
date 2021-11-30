@@ -8,6 +8,7 @@ use Stillat\Numeral\Numeral;
 
 class Helper {
     public static function MoneyConvert($cash, $type = null){
+        
         $languageManager = new LanguageManager;
         // Create the Numeral instance.
 

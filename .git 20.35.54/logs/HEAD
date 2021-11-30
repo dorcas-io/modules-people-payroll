@@ -1,6 +1,0 @@
-0000000000000000000000000000000000000000 d27700a3320a52db6ef28655af15c116e29471e5 Diyangi <ayotomideaina@gmail.com> 1584352335 +0100	commit (initial): people payroll initial commit
-d27700a3320a52db6ef28655af15c116e29471e5 92a32f461b096ed5e20a3919c6eb7cf5e06cecba Diyangi <ayotomideaina@gmail.com> 1584352506 +0100	commit (merge): fixed merge conflicts
-92a32f461b096ed5e20a3919c6eb7cf5e06cecba f8b31bff59ed1a64b715712429e8755682eb8fcc Diyangi <ayotomideaina@gmail.com> 1584469059 +0100	commit: payroll updates
-f8b31bff59ed1a64b715712429e8755682eb8fcc 0a7138a71bb259784f657de64b67394067213b39 tomideo1 <ayotomideaina@gmail.com> 1585490391 +0100	commit: added caching system
-0a7138a71bb259784f657de64b67394067213b39 bb79424a0ae65de6b661b9ce74b7d7718767ebe0 tomideo1 <ayotomideaina@gmail.com> 1585563471 +0100	commit: bug fix
-bb79424a0ae65de6b661b9ce74b7d7718767ebe0 66396d0112308f1a1226a57520d6cb6b59dfcaea tomideo1 <ayotomideaina@gmail.com> 1585579625 +0100	commit: revert of the payroll controller from caching
